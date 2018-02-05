@@ -9,7 +9,7 @@
                     <b-form-input pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" id="exampleInput2" type="password" required placeholder="********">
                     </b-form-input>
                 </b-form-group>
-                <b-button type="submit" variant="primary">Submit</b-button>
+                <b-button type="submit" variant="info">Submit</b-button>
                 <b-link to="/register">I have not account yet</b-link>
             </b-form>
         </b-container>
