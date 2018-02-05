@@ -1,14 +1,20 @@
 <template>
+<<<<<<< HEAD
 <!-- eslint-disable -->
     <div>
         <h1>Game page</h1>
         <v-map ref="map" id="map" :zoom=13 :center="[47.413220, -1.219482]" :zoomControl=false :options="option" @l-click="placeMarker">
     		<v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
         </v-map>
+=======
+    <div>
+        <h1>Game page</h1>
+>>>>>>> fd3a70b1241758a46271b9e8dc973c974acea504
     </div>
 </template>
 
 <script>
+<<<<<<< HEAD
 /* eslint-disable */
 import Vue2Leaflet from 'vue2-leaflet';
 import Vue from 'vue';
@@ -71,3 +77,14 @@ export default {
 	height: 500px;
 }
 </style>
+=======
+export default {
+  name: 'Game',
+  data () {
+    return {
+      msg: 'This is the game page'
+    }
+  }
+}
+</script>
+>>>>>>> fd3a70b1241758a46271b9e8dc973c974acea504
