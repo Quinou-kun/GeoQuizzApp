@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import Signin from '@/components/Signin'
 import Register from '@/components/Register'
 import New from '@/components/New'
+import Game from '@/components/Game'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/new',
       name: 'New',
       component: New
+    },
+    {
+      path: '/game',
+      name: 'Game',
+      component: Game
     }
   ]
 })

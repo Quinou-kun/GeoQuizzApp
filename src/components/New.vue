@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>New game page</h1>
+        <b-button to="/game"><h1>Start game ! </h1></b-button>
     </div>
 </template>
 
