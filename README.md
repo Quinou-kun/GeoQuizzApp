@@ -1,39 +1,21 @@
-# GeoQuizzApp
+# geoquizzapp
 
-Add Description
+> A Vue.js project
 
-## Getting Started
+## Build Setup
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+``` bash
+# install dependencies
+npm install
 
-### Prerequisites
-```
-* 
-* 
-```
-### Installing and Running
+# serve with hot reload at localhost:8080
+npm run dev
 
-In order to run the project, use he following commands
+# build for production with minification
+npm run build
 
-```
-* 
-* 
+# build for production and view the bundle analyzer report
+npm run build --report
 ```
 
-Then, a server is running on your local machine shown in your terminal.
-
-
-## Built With
-
-* [VueJs](https://github.com/vuejs/vue) (example)
-* 
-* 
-* 
-
-# Creators
-
-* [Quentin RENOUARD](https://github.com/Quinou-kun)
-* [Luc ANDRE](https://github.com/lucandreiut)
-* [Quentin DELAMARRE](https://github.com/windos757)
-* [Allan DEMARBRE](https://github.com/demarbre1u)
-* [Nacera ELIAS](https://github.com/EliasNacera)
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
