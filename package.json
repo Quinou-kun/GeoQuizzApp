@@ -15,8 +15,7 @@
     "bootstrap-vue": "^2.0.0-rc.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuejs-count-down": "0.0.5",
-    "vuejs-countdown": "^0.1.0"
+    "vue2-leaflet": "0.0.58"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
