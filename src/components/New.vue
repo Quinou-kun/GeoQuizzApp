@@ -38,14 +38,12 @@ export default {
     reset () {
       this.timer = 5
       this.count()
-=======
       msg: 'This is the register page'
     }
   },
   methods: {
     register () {
       console.log('register')
->>>>>>> cb373e6450dfebb524b23d4052516f23fad45e50
     }
   }
 }
