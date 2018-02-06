@@ -2,6 +2,11 @@
 <!-- eslint-disable -->
     <div>
       <div v-if="this.index !== this.maxIndex">
+        <div>
+            <p v-if="difficulty === '0'">EASY MODE</p>
+            <p v-if="difficulty === '1'">NORMAL MODE</p>
+            <p v-if="difficulty === '2'">HARDCORE MODE</p>
+        </div>
         <div id="img">
             <b-img :src="img" fluid alt="Responsive image"></b-img>
         </div>
@@ -50,6 +55,7 @@ export default {
     'v-marker': Vue2Leaflet.Marker
   },
   created () {
+    this.difficulty = this.$store.getters['game/getDifficulty']
     this.count()
   },
   data () {
@@ -72,7 +78,8 @@ export default {
       score: 0,
       index: 0,
       maxIndex: 10,
-      pts:0
+      pts:0,
+      difficulty: 0
     }
   },
   mounted () {
@@ -131,20 +138,49 @@ export default {
         .setLatLng([(this.marker.getLatLng().lat + this.clickedMarker.getLatLng().lat)/2, (this.marker.getLatLng().lng + this.clickedMarker.getLatLng().lng)/2])
         .setContent(this.distance + ' meters').openOn(this.$refs.map.mapObject)
 
-      if(this.distance < 150){
-        this.pts += 5
-      } else if(this.distance < 300) {
-        this.pts += 3
-      } else if(this.distance < 500){
-        this.pts += 1
+      this.calculateScore()
+      this.resetTimer()
+    },
+    calculateScore () {
+      console.log(this.difficulty)
+      switch(this.difficulty){
+        case '0':
+          if(this.distance < 300){
+            this.pts += 5
+          } else if(this.distance < 500) {
+            this.pts += 3
+          } else if(this.distance < 700){
+            this.pts += 1
+          }
+          break
+        case '1':
+          if(this.distance < 150){
+            this.pts += 5
+          } else if(this.distance < 300) {
+            this.pts += 3
+          } else if(this.distance < 500){
+            this.pts += 1
+          }
+          break
+        case '2':
+          if(this.distance < 50){
+            this.pts += 5
+          } else if(this.distance < 150) {
+            this.pts += 3
+          } else if(this.distance < 300){
+            this.pts += 1
+          }
+          break
+        default:
+          break
       }
+
       if(this.timer >= 20){
         this.pts*=4
       } else if(this.timer >= 10){
         this.pts*=2
       }
       this.score += this.pts
-      this.resetTimer()
     },
     resetTimer () {
       this.timer = 30
