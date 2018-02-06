@@ -105,7 +105,12 @@ export default {
         this.distance = 600
       }
 
-      let popup = L.popup()
+      let options = {
+        autoClose: false,
+        closeButton: false,
+        closeOnClick: false
+      }
+      let popup = L.popup(options)
         .setLatLng([(this.marker.getLatLng().lat + this.clickedMarker.getLatLng().lat)/2, (this.marker.getLatLng().lng + this.clickedMarker.getLatLng().lng)/2])
         .setContent(this.distance + ' meters').openOn(this.$refs.map.mapObject)
 
