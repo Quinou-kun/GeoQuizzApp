@@ -1,27 +1,25 @@
 <template>
 <!-- eslint-disable -->
     <div>
-        <h1>Game page</h1>
-        <div>
-            <h1>{{timer}}</h1>
-        </div>
+
         <div id="img">
             <b-img :src="img" fluid alt="Responsive image"></b-img>
         </div>
+
+        <div id="countdown" class="text-center">
+            <h1 v-if="!this.stop">{{timer}}</h1>
+            <b-button v-if="!this.stop" @click="stopTimer()">This is here !</b-button>
+            <div v-if="this.stop">
+                <h1>+ {{pts}} pts</h1>
+                <h1>Score : {{score}}</h1>
+                <b-button>Go to the next !</b-button>
+            </div>
+        </div>
+
         <div id="geo-map">
-        <v-map ref="map" id="map" :zoom=13 :center="[47.413220, -1.219482]" :zoomControl=false :options="option" @l-click="placeMarker">
+        <v-map ref="map" id="map" :zoom=15 :center="[48.6915784, 6.1767092]" :zoomControl=false :options="option" @l-click="placeMarker">
     		<v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
         </v-map>
-        </div>
-
-        <div>
-            <b-button @click="stopTimer()">This is here !</b-button>
-        </div>
-
-        <div v-if="this.stop">
-            <h1>+3pts</h1>
-            <h3>Distance : {{distance}} meters</h3>
-            <b-button>Go to the next !</b-button>
         </div>
     </div>
 </template>
@@ -49,17 +47,19 @@ export default {
     return {
       msg: 'This is the game page',
       zoom:13,
-      center: L.latLng(47.413220, -1.219482),
+      center: L.latLng(48.6915784, 6.1767092),
       url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      marker: null,
+      marker: L.marker(L.latLng(48.6915784, 6.1767092)),
       option: {zoomControl : false, touchZoom : false, doubleClickZoom : false, scrollWheelZoom : false, boxZoom : false, keyboard : false},
       clicked : false,
       clickedMarker : null,
-      timer: 10,
+      timer: 30,
       img: 'http://lorempixel.com/500/500',
       stop: false,
-      distance: null
+      distance: null,
+      score: 0,
+      pts:0
     }
   },
   mounted () {
@@ -67,20 +67,18 @@ export default {
   },
   methods :{
   	placeMarker (event) {
-  		if (!this.clicked){
+      if(!this.stop){
+        if (!this.clicked){
 
+          this.clicked = true
 
-            this.marker = L.marker(L.latLng(47.413220, -1.219482))
+          this.clickedMarker = L.marker(event.latlng)
+          this.clickedMarker.addTo(this.$refs.map.mapObject)
+        }else{
+          this.clickedMarker.setLatLng(event.latlng)
+        }
+      }
 
-  			this.clicked = true
-
-  			this.clickedMarker = L.marker(event.latlng)
-  			this.clickedMarker.addTo(this.$refs.map.mapObject)
-
-            this.distance = Math.round(10* this.clickedMarker.getLatLng().distanceTo(this.marker.getLatLng()))/10
-  		}else{
-  			this.clickedMarker.setLatLng(event.latlng)
-  		}
   	},
     setTimer (sec) {
       this.timer = sec
@@ -89,18 +87,53 @@ export default {
       let interval = setInterval(() => {
         this.setTimer(this.timer)
         this.timer--
-        if (this.timer < 0 || this.stop) {
+        if (this.timer <= 0 || this.stop) {
+          if(!this.stop){
+            this.stop = !this.stop
+          }
           clearInterval(interval)
-          this.resetTimer()
           this.displaySolution()
         }
       }, 1000)
     },
     displaySolution(){
+      this.$refs.map.mapObject.dragging.disable()
+      this.$refs.map.mapObject.addLayer(new L.Polyline([this.clickedMarker.getLatLng(), this.marker.getLatLng()]))
+
       this.marker.addTo(this.$refs.map.mapObject)
+
+      if(this.clickedMarker !== null){
+        this.distance = Math.round(10* this.clickedMarker.getLatLng().distanceTo(this.marker.getLatLng()))/10
+      } else {
+        this.distance = 600
+      }
+
+      let options = {
+        autoClose: false,
+        closeButton: false,
+        closeOnClick: false
+      }
+      let popup = L.popup(options)
+        .setLatLng([(this.marker.getLatLng().lat + this.clickedMarker.getLatLng().lat)/2, (this.marker.getLatLng().lng + this.clickedMarker.getLatLng().lng)/2])
+        .setContent(this.distance + ' meters').openOn(this.$refs.map.mapObject)
+
+      if(this.distance < 150){
+        this.pts += 5
+      } else if(this.distance < 300) {
+        this.pts += 3
+      } else if(this.distance < 500){
+        this.pts += 1
+      }
+      if(this.timer >= 20){
+        this.pts*=4
+      } else if(this.timer >= 10){
+        this.pts*=2
+      }
+      this.score += this.pts
+      this.resetTimer()
     },
     resetTimer () {
-      this.timer = 10
+      this.timer = 30
     },
     stopTimer () {
   	  this.stop = !this.stop
@@ -114,12 +147,16 @@ export default {
 /* eslint-disable */
 @import "../../node_modules/leaflet/dist/leaflet.css";
 
-    #map{
-        width: 500px;
-        height: 500px;
+    #geo-map{
+        width: 50vw;
+        height: 80vh;
     }
-    #geo-map, #img{
-        vertical-align : top;
+    #geo-map, #img, #countdown{
+        vertical-align : middle;
         display : inline-block;
+    }
+    #countdown{
+        text-align : center;
+        padding : 0 2vw;
     }
 </style>
