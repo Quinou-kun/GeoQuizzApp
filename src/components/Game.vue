@@ -1,13 +1,15 @@
 <template>
 <!-- eslint-disable -->
     <div>
-        <h1>Game page</h1>
-        <div>
-            <h1>{{timer}}</h1>
-        </div>
+
         <div id="img">
             <b-img :src="img" fluid alt="Responsive image"></b-img>
         </div>
+
+        <div id="countdown">
+            <h1>{{timer}}</h1>
+        </div>
+
         <div id="geo-map">
         <v-map ref="map" id="map" :zoom=15 :center="[48.6915784, 6.1767092]" :zoomControl=false :options="option" @l-click="placeMarker">
     		<v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
@@ -67,15 +69,18 @@ export default {
   },
   methods :{
   	placeMarker (event) {
-  		if (!this.clicked){
+      if(!this.stop){
+        if (!this.clicked){
 
-  			this.clicked = true
+          this.clicked = true
 
-  			this.clickedMarker = L.marker(event.latlng)
-  			this.clickedMarker.addTo(this.$refs.map.mapObject)
-  		}else{
-  			this.clickedMarker.setLatLng(event.latlng)
-  		}
+          this.clickedMarker = L.marker(event.latlng)
+          this.clickedMarker.addTo(this.$refs.map.mapObject)
+        }else{
+          this.clickedMarker.setLatLng(event.latlng)
+        }
+      }
+
   	},
     setTimer (sec) {
       this.timer = sec
@@ -94,6 +99,7 @@ export default {
       }, 1000)
     },
     displaySolution(){
+      this.$refs.map.mapObject.dragging.disable()
       this.marker.addTo(this.$refs.map.mapObject)
       if(this.clickedMarker !== null){
         this.distance = Math.round(10* this.clickedMarker.getLatLng().distanceTo(this.marker.getLatLng()))/10
@@ -130,12 +136,12 @@ export default {
 /* eslint-disable */
 @import "../../node_modules/leaflet/dist/leaflet.css";
 
-    #map{
-        width: 70vw;
+    #geo-map{
+        width: 50vw;
         height: 80vh;
     }
-    #geo-map, #img{
-        vertical-align : top;
+    #geo-map, #img, #countdown{
+        vertical-align : middle;
         display : inline-block;
     }
 </style>
