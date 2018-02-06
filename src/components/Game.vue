@@ -6,25 +6,20 @@
             <b-img :src="img" fluid alt="Responsive image"></b-img>
         </div>
 
-        <div id="countdown">
-            <h1>{{timer}}</h1>
+        <div id="countdown" class="text-center">
+            <h1 v-if="!this.stop">{{timer}}</h1>
+            <b-button v-if="!this.stop" @click="stopTimer()">This is here !</b-button>
+            <div v-if="this.stop">
+                <h1>+ {{pts}} pts</h1>
+                <h1>Score : {{score}}</h1>
+                <b-button>Go to the next !</b-button>
+            </div>
         </div>
 
         <div id="geo-map">
         <v-map ref="map" id="map" :zoom=15 :center="[48.6915784, 6.1767092]" :zoomControl=false :options="option" @l-click="placeMarker">
     		<v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
         </v-map>
-        </div>
-
-        <div>
-            <b-button v-if="!this.stop" @click="stopTimer()">This is here !</b-button>
-        </div>
-
-        <div v-if="this.stop">
-            <h1>+ {{pts}} pts</h1>
-            <h1>Score : {{score}}</h1>
-            <h3 v-if="clickedMarker != null">Distance : {{distance}} meters</h3>
-            <b-button>Go to the next !</b-button>
         </div>
     </div>
 </template>
@@ -100,12 +95,20 @@ export default {
     },
     displaySolution(){
       this.$refs.map.mapObject.dragging.disable()
+      this.$refs.map.mapObject.addLayer(new L.Polyline([this.clickedMarker.getLatLng(), this.marker.getLatLng()]))
+
       this.marker.addTo(this.$refs.map.mapObject)
+
       if(this.clickedMarker !== null){
         this.distance = Math.round(10* this.clickedMarker.getLatLng().distanceTo(this.marker.getLatLng()))/10
       } else {
         this.distance = 600
       }
+
+      let popup = L.popup()
+        .setLatLng([(this.marker.getLatLng().lat + this.clickedMarker.getLatLng().lat)/2, (this.marker.getLatLng().lng + this.clickedMarker.getLatLng().lng)/2])
+        .setContent(this.distance + ' meters').openOn(this.$refs.map.mapObject)
+
       if(this.distance < 150){
         this.pts += 5
       } else if(this.distance < 300) {
@@ -143,5 +146,9 @@ export default {
     #geo-map, #img, #countdown{
         vertical-align : middle;
         display : inline-block;
+    }
+    #countdown{
+        text-align : center;
+        padding : 0 2vw;
     }
 </style>
