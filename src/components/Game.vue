@@ -62,6 +62,9 @@ export default {
       distance: null
     }
   },
+  mounted () {
+    this.$refs.map.mapObject.dragging.disable();
+  },
   methods :{
   	placeMarker (event) {
   		if (!this.clicked){

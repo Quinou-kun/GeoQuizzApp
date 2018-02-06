@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
     <div>
         <h1>{{timer}}</h1>
         <h2>Are you ready ? Click to the button below if you think you are !</h2>
@@ -7,6 +8,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: 'Register',
   data () {
