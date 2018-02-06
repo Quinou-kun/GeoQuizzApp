@@ -21,7 +21,7 @@
         <div v-if="this.stop">
             <h1>+ {{pts}} pts</h1>
             <h1>Score : {{score}}</h1>
-            <h3>Distance : {{distance}} meters</h3>
+            <h3 v-if="clickedMarker != null">Distance : {{distance}} meters</h3>
             <b-button>Go to the next !</b-button>
         </div>
     </div>
@@ -53,7 +53,7 @@ export default {
       center: L.latLng(48.6915784, 6.1767092),
       url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      marker: null,
+      marker: L.marker(L.latLng(48.6915784, 6.1767092)),
       option: {zoomControl : false, touchZoom : false, doubleClickZoom : false, scrollWheelZoom : false, boxZoom : false, keyboard : false},
       clicked : false,
       clickedMarker : null,
@@ -68,9 +68,6 @@ export default {
   methods :{
   	placeMarker (event) {
   		if (!this.clicked){
-
-
-            this.marker = L.marker(L.latLng(48.6915784, 6.1767092))
 
   			this.clicked = true
 
@@ -87,7 +84,10 @@ export default {
       let interval = setInterval(() => {
         this.setTimer(this.timer)
         this.timer--
-        if (this.timer < 0 || this.stop) {
+        if (this.timer <= 0 || this.stop) {
+          if(!this.stop){
+            this.stop = !this.stop
+          }
           clearInterval(interval)
           this.displaySolution()
         }
@@ -95,12 +95,16 @@ export default {
     },
     displaySolution(){
       this.marker.addTo(this.$refs.map.mapObject)
-      this.distance = Math.round(10* this.clickedMarker.getLatLng().distanceTo(this.marker.getLatLng()))/10
+      if(this.clickedMarker !== null){
+        this.distance = Math.round(10* this.clickedMarker.getLatLng().distanceTo(this.marker.getLatLng()))/10
+      } else {
+        this.distance = 600
+      }
       if(this.distance < 150){
         this.pts += 5
       } else if(this.distance < 300) {
         this.pts += 3
-      } else{
+      } else if(this.distance < 500){
         this.pts += 1
       }
       if(this.timer >= 20){
