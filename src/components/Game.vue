@@ -1,6 +1,7 @@
 <template>
 <!-- eslint-disable -->
     <div>
+      <div v-if="this.index !== this.maxIndex">
         <div>
             <p v-if="difficulty === '0'">EASY MODE</p>
             <p v-if="difficulty === '1'">NORMAL MODE</p>
@@ -16,15 +17,24 @@
             <div v-if="this.stop">
                 <h1>+ {{pts}} pts</h1>
                 <h1>Score : {{score}}</h1>
+                <h2>Question {{index + 1}}/{{maxIndex}}</h2>
                 <b-button @click="resetMap()">Next !</b-button>
             </div>
         </div>
 
         <div id="geo-map">
-        <v-map ref="map" id="map" :zoom=15 :center="[48.6915784, 6.1767092]" :zoomControl=false :options="option" @l-click="placeMarker">
-    		<v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
-        </v-map>
+          <v-map ref="map" id="map" :zoom=15 :center="[48.6915784, 6.1767092]" :zoomControl=false :options="option" @l-click="placeMarker">
+      		<v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+          </v-map>
         </div>
+      </div>
+      <div v-else>
+        <h1>You completed this series !</h1>
+        <h1>Your final score : {{score}}</h1>
+        <b-button @click="saveScore()">Save</b-button>
+        <b-button to="/new">Restart</b-button>
+        <b-button to="/">Home</b-button>
+      </div>
     </div>
 </template>
 
@@ -66,6 +76,8 @@ export default {
       stop: false,
       distance: null,
       score: 0,
+      index: 0,
+      maxIndex: 10,
       pts:0,
       difficulty: 0
     }
@@ -174,6 +186,7 @@ export default {
       this.timer = 30
     },
     resetMap () {
+      this.index += 1
       this.$refs.map.mapObject.removeLayer(this.marker)
       this.$refs.map.mapObject.removeLayer(this.clickedMarker)
       this.$refs.map.mapObject.removeLayer(this.popup)
@@ -191,6 +204,9 @@ export default {
       if(this.clicked){
         this.stop = !this.stop  
       } 
+    },
+    saveScore () {
+      alert(this.score)
     }
 
   }
