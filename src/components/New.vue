@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
     <div>
         <b-form-group label="Difficulty : ">
             <b-form-radio-group id="btnradios2" buttons button-variant="outline-primary" size="lg" v-model="selected" :options="options"/>
@@ -18,6 +19,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: 'Register',
   data () {

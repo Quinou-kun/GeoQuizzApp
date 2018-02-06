@@ -8,11 +8,11 @@
 
         <div id="countdown" class="text-center">
             <h1 v-if="!this.stop">{{timer}}</h1>
-            <b-button v-if="!this.stop" @click="stopTimer()">This is here !</b-button>
+            <b-button v-if="!this.stop" :disabled="!this.clicked" @click="stopTimer()">Here !</b-button>
             <div v-if="this.stop">
                 <h1>+ {{pts}} pts</h1>
                 <h1>Score : {{score}}</h1>
-                <b-button>Go to the next !</b-button>
+                <b-button @click="resetMap()">Next !</b-button>
             </div>
         </div>
 
@@ -54,6 +54,8 @@ export default {
       option: {zoomControl : false, touchZoom : false, doubleClickZoom : false, scrollWheelZoom : false, boxZoom : false, keyboard : false},
       clicked : false,
       clickedMarker : null,
+      popup : null,
+      line : null,
       timer: 30,
       img: 'http://lorempixel.com/500/500',
       stop: false,
@@ -61,6 +63,9 @@ export default {
       score: 0,
       pts:0
     }
+  },
+  mounted () {
+    this.$refs.map.mapObject.dragging.disable();
   },
   methods :{
   	placeMarker (event) {
@@ -95,7 +100,8 @@ export default {
     },
     displaySolution(){
       this.$refs.map.mapObject.dragging.disable()
-      this.$refs.map.mapObject.addLayer(new L.Polyline([this.clickedMarker.getLatLng(), this.marker.getLatLng()]))
+      this.line = new L.Polyline([this.clickedMarker.getLatLng(), this.marker.getLatLng()])
+      this.$refs.map.mapObject.addLayer(this.line)
 
       this.marker.addTo(this.$refs.map.mapObject)
 
@@ -110,7 +116,7 @@ export default {
         closeButton: false,
         closeOnClick: false
       }
-      let popup = L.popup(options)
+      this.popup = L.popup(options)
         .setLatLng([(this.marker.getLatLng().lat + this.clickedMarker.getLatLng().lat)/2, (this.marker.getLatLng().lng + this.clickedMarker.getLatLng().lng)/2])
         .setContent(this.distance + ' meters').openOn(this.$refs.map.mapObject)
 
@@ -132,8 +138,24 @@ export default {
     resetTimer () {
       this.timer = 30
     },
+    resetMap () {
+      this.$refs.map.mapObject.removeLayer(this.marker)
+      this.$refs.map.mapObject.removeLayer(this.clickedMarker)
+      this.$refs.map.mapObject.removeLayer(this.popup)
+      this.$refs.map.mapObject.removeLayer(this.line)
+      this.pts = 0
+      this.stop = false
+      this.clicked = false
+      this.clickedMarker = null
+      this.marker = L.marker(L.latLng(48.6915784, 6.1767092))
+      this.$refs.map.mapObject.dragging.enable()
+      this.count()
+
+    },
     stopTimer () {
-  	  this.stop = !this.stop
+      if(this.clicked){
+        this.stop = !this.stop  
+      } 
     }
 
   }
