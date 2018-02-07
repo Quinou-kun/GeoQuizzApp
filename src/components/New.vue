@@ -1,33 +1,48 @@
 <template>
   <!-- eslint-disable -->
-    <div>
-        <div>
-            <b-form-group label="cities">
-                <b-form-radio-group v-model="city">
-                    <b-form-radio v-for="serie in series.series" :value=serie >{{serie.ville}}</b-form-radio>
-                </b-form-radio-group>
-            </b-form-group>
+    <div id="new">
+        <div id="new-container">
+            <b-card bg-variant="dark"
+                    header="<h3>Choose the city you think you know</h3>"
+                    text-variant="white"
+                    class="home-content text-center">
+                <b-form-group>
+                    <b-form-radio-group v-model="city" buttons button-variant="outline-danger" size="lg">
+                        <b-form-radio  v-for="serie in series.series" :value=serie >{{serie.ville}}</b-form-radio>
+                    </b-form-radio-group>
+                </b-form-group>
+            </b-card>
+
+            <b-card bg-variant="dark"
+                    header="<h3>Difficulty</h3>"
+                    text-variant="white"
+                    class="home-content text-center">
+                <b-form-group>
+                    <b-form-radio-group v-model="difficulty" buttons button-variant="outline-danger" size="lg">
+                        <b-form-radio value='0' >EASY</b-form-radio>
+                        <b-form-radio value='1' >NORMAL</b-form-radio>
+                        <b-form-radio value='2' >HARDCORE</b-form-radio>
+                    </b-form-radio-group>
+                </b-form-group>
+                <div v-if="difficulty === '0'">
+                    <b-table striped hover :items="itemsEasy" :fields="fields"></b-table>
+                </div>
+                <div v-if="difficulty === '1'">
+                    <b-table striped hover :items="itemsNormal" :fields="fields"></b-table>
+                </div>
+                <div v-if="difficulty === '2'">
+                    <b-table striped hover :items="itemsHardcore" :fields="fields"></b-table>
+                </div>
+            </b-card>
+
+            <b-card bg-variant="dark"
+                    header="<h3>Are you ready ? Click to the button below if you think you are !</h3>"
+                    text-variant="white"
+                    class="home-content text-center">
+                <b-button @click="setGame()" variant="danger"><h1>Start game ! </h1></b-button>
+            </b-card>
+
         </div>
-        <div>
-            <b-form-group label="difficulties">
-                <b-form-radio-group v-model="difficulty">
-                    <b-form-radio value='0' >EASY</b-form-radio>
-                    <b-form-radio value='1' >NORMAL</b-form-radio>
-                    <b-form-radio value='2' >HARDCORE</b-form-radio>
-                </b-form-radio-group>
-            </b-form-group>
-        </div>
-        <div v-if="difficulty === '0'">
-            <p>distance &lt; 300 = 5 pts<br>distance &lt; 500 = 3 pts<br>distance &lt; 700 = 1 pts</p>
-        </div>
-        <div v-if="difficulty === '1'">
-            <p>distance &lt; 150 = 5 pts<br>distance &lt; 300 = 3 pts<br>distance &lt; 500 = 1 pts</p>
-        </div>
-        <div v-if="difficulty === '2'">
-            <p>distance &lt; 50 = 5 pts<br>distance &lt; 150 = 3 pts<br>distance &lt; 300 = 1 pts</p>
-        </div>
-        <h2>Are you ready ? Click to the button below if you think you are !</h2>
-        <b-button @click="setGame()"><h1>Start game ! </h1></b-button>
     </div>
 </template>
 
@@ -41,7 +56,23 @@ export default {
     return {
       msg: 'This is the new game page',
       difficulty: '1',
-      city: {}
+      city: {},
+      fields: [ 'DISTANCE', 'POINTS' ],
+      itemsEasy: [
+        { 'DISTANCE': '300 meters', 'POINTS': '+5'},
+        { 'DISTANCE': '500 meters', 'POINTS': '+3'},
+        { 'DISTANCE': '700 meters', 'POINTS': '+1'}
+      ],
+      itemsNormal: [
+        { 'DISTANCE': '150 meters', 'POINTS': '+5'},
+        { 'DISTANCE': '300 meters', 'POINTS': '+3'},
+        { 'DISTANCE': '500 meters', 'POINTS': '+1'}
+      ],
+      itemsHardcore: [
+        { 'DISTANCE': '50 meters', 'POINTS': '+5'},
+        { 'DISTANCE': '150 meters', 'POINTS': '+3'},
+        { 'DISTANCE': '300 meters', 'POINTS': '+1'}
+      ],
     }
   },
   created () {
@@ -61,3 +92,17 @@ export default {
   }
 }
 </script>
+
+<style>
+    #new{
+        text-align : center;
+        background-color : rgba(0,0,0,0.8);
+        color : white;
+        height : calc(100vh - 140px)
+    }
+
+    #new-container{
+        width: 50%;
+        margin : auto;
+    }
+</style>
