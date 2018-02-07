@@ -23,11 +23,12 @@
         </div>
 
         <div id="geo-map">
-          <v-map ref="map" id="map" :zoom=15 :center="[48.6915784, 6.1767092]" :zoomControl=false :options="option" @l-click="placeMarker">
-      		<v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
-          </v-map>
+        <v-map ref="map" id="map" :zoom=zoom :center=center :zoomControl=false :options="option" @l-click="placeMarker">
+    		<v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+        </v-map>
         </div>
       </div>
+
       <div v-else>
         <h1>You completed this series !</h1>
         <h1>Your final score : {{score}}</h1>
@@ -55,17 +56,16 @@ export default {
     'v-marker': Vue2Leaflet.Marker
   },
   created () {
-    this.difficulty = this.$store.getters['game/getDifficulty']
     this.count()
   },
   data () {
     return {
       msg: 'This is the game page',
       zoom:13,
-      center: L.latLng(48.6915784, 6.1767092),
+      center: null,
       url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      marker: L.marker(L.latLng(48.6915784, 6.1767092)),
+      marker: null,
       option: {zoomControl : false, touchZoom : false, doubleClickZoom : false, scrollWheelZoom : false, boxZoom : false, keyboard : false},
       clicked : false,
       clickedMarker : null,
@@ -77,21 +77,39 @@ export default {
       distance: null,
       score: 0,
       index: 0,
-      maxIndex: 10,
+      maxIndex: null,
       pts:0,
-      difficulty: 0
+      difficulty: 0,
+      city: {},
+      imgNumber: 0,
     }
   },
   mounted () {
+
     this.$refs.map.mapObject.dragging.disable();
+
+    this.difficulty = this.$store.getters['game/getDifficulty']
+    this.city = this.$store.getters['game/getCity']
+    this.maxIndex = this.city.photos.length
+
+    let position = this.city.mapOptions.split(';')
+
+    this.center = L.latLng(position[0], position[1])
+    this.zoom = Number(position[2])
+
+    this.nextImage(this.imgNumber)
+
   },
   methods :{
+    nextImage (imgNumber){
+      let markerPosition = this.city.photos[imgNumber].position.split(';')
+      this.marker = L.marker(L.latLng(markerPosition[0], markerPosition[1]))
+      this.img = 'http://localhost:8080/geoquizzapi/api/photos/' + this.city.photos[imgNumber].id
+    },
   	placeMarker (event) {
       if(!this.stop){
         if (!this.clicked){
-
           this.clicked = true
-
           this.clickedMarker = L.marker(event.latlng)
           this.clickedMarker.addTo(this.$refs.map.mapObject)
         }else{
@@ -142,7 +160,6 @@ export default {
       this.resetTimer()
     },
     calculateScore () {
-      console.log(this.difficulty)
       switch(this.difficulty){
         case '0':
           if(this.distance < 300){
@@ -195,8 +212,11 @@ export default {
       this.stop = false
       this.clicked = false
       this.clickedMarker = null
-      this.marker = L.marker(L.latLng(48.6915784, 6.1767092))
       this.$refs.map.mapObject.dragging.enable()
+
+      this.imgNumber++
+      this.nextImage(this.imgNumber)
+
       this.count()
 
     },
