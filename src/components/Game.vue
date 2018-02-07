@@ -1,6 +1,6 @@
 <template>
 <!-- eslint-disable -->
-    <div>
+    <div id="game">
       <div v-if="this.index !== this.maxIndex">
         <div>
             <p v-if="difficulty === '0'">EASY MODE</p>
@@ -257,5 +257,9 @@ export default {
     #countdown{
         text-align : center;
         padding : 0 2vw;
+    }
+
+    #game{
+        background-color : white;
     }
 </style>
