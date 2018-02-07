@@ -25,7 +25,7 @@
 
         <div id="geo-map">
         <v-map ref="map" id="map" :zoom=zoom :center=center :zoomControl=false :options="option" @l-click="placeMarker">
-    		<v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+        <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
         </v-map>
         </div>
       </div>
@@ -121,7 +121,7 @@ export default {
         }
       }
 
-  	},
+    },
     setTimer (sec) {
       this.timer = sec
     },
@@ -141,26 +141,26 @@ export default {
     displaySolution(){
       this.$refs.map.mapObject.dragging.disable()
 
-      if(this.clickedMarker !== null) {
-        this.line = new L.Polyline([this.clickedMarker.getLatLng(), this.marker.getLatLng()])
-        this.$refs.map.mapObject.addLayer(this.line)
-      }
-
       this.marker.addTo(this.$refs.map.mapObject)
 
       if(this.clickedMarker !== null){
+        this.line = new L.Polyline([this.clickedMarker.getLatLng(), this.marker.getLatLng()])
+        this.$refs.map.mapObject.addLayer(this.line)
         this.distance = Math.round(10* this.clickedMarker.getLatLng().distanceTo(this.marker.getLatLng()))/10
+
+        let options = {
+          autoClose: false,
+          closeButton: false,
+          closeOnClick: false
+        }
+        if(this.distance !== null){
+          this.popup = L.popup(options)
+            .setLatLng([(this.marker.getLatLng().lat + this.clickedMarker.getLatLng().lat)/2, (this.marker.getLatLng().lng + this.clickedMarker.getLatLng().lng)/2])
+            .setContent(this.distance + ' meters').openOn(this.$refs.map.mapObject)
+        }
+
       }
 
-      let options = {
-        autoClose: false,
-        closeButton: false,
-        closeOnClick: false
-      }
-      if(this.distance !== null){
-        this.popup = L.popup(options)
-          .setLatLng([(this.marker.getLatLng().lat + this.clickedMarker.getLatLng().lat)/2, (this.marker.getLatLng().lng + this.clickedMarker.getLatLng().lng)/2])
-          .setContent(this.distance + ' meters').openOn(this.$refs.map.mapObject)
       }
 
       this.calculateScore()
@@ -212,9 +212,11 @@ export default {
     resetMap () {
       this.index += 1
       this.$refs.map.mapObject.removeLayer(this.marker)
-      this.$refs.map.mapObject.removeLayer(this.clickedMarker)
-      this.$refs.map.mapObject.removeLayer(this.popup)
-      this.$refs.map.mapObject.removeLayer(this.line)
+      if(this.clickedMarker !== null){
+        this.$refs.map.mapObject.removeLayer(this.clickedMarker)
+        this.$refs.map.mapObject.removeLayer(this.popup)
+        this.$refs.map.mapObject.removeLayer(this.line)
+      }
       this.pts = 0
       this.stop = false
       this.clicked = false
