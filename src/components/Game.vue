@@ -161,8 +161,6 @@ export default {
 
       }
 
-      }
-
       this.calculateScore()
       this.resetTimer()
     },

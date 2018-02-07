@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div id="home-container">
         <b-container>
-            <b-card no-body id="scoreboard">
-                <b-tabs card>
+            <b-card no-body id="scoreboard" bg-variant="dark">
+                <b-tabs pills card>
                     <b-tab v-for="game in this.games" :title="game.ville">
-                        <b-table bordered responsive :items="game.scores" :fields="fields"></b-table>
+                        <b-table head-variant="light" dark bordered responsive :items="game.scores" :fields="fields"></b-table>
                     </b-tab>
                 </b-tabs>
             </b-card>
@@ -60,8 +60,16 @@ export default {
 </script>
 
 <style scoped>
-    #scoreboard {
-        margin-top: 10px;
+    
+    #home-container{
+        background-color : rgba(0,0,0,0.8);
+        height : calc(100vh - 140px);
+    }
+
+    #scoreboard{
+        background-color : rgba(0,0,0,0.3);
+        border-radius : 10px;
+        font-size : 1.2em;
     }
 </style>
 
