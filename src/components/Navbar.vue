@@ -9,6 +9,7 @@
                   <b-nav-item to="/" exact class="mr-3">Home</b-nav-item>
                   <b-nav-item to="/new" exact class="mr-3">New Game</b-nav-item>
                   <b-nav-item to="/signin" exact class="mr-3">Log In</b-nav-item>
+                  <b-nav-item to="/scoreboard" exact class="mr-3">Scoreboard</b-nav-item>
               </b-navbar-nav>
               <b-navbar-nav v-else class="ml-auto mr-5">
                   <b-nav-item to="/" exact class="mr-3">Quit game</b-nav-item>
