@@ -1,7 +1,7 @@
 <template>
     <div id="home-container">
         <b-container>
-            <b-card no-body id="scoreboard" bg-variant="dark">
+            <b-card no-body id="scoreboard">
                 <b-tabs pills card>
                     <b-tab v-for="game in this.games" :title="game.ville">
                         <b-table head-variant="light" dark bordered responsive :items="game.scores" :fields="fields"></b-table>

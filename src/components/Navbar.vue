@@ -38,6 +38,7 @@ export default {
         height : 140px;
         padding : 30px;
         font-size : 1.5em;
+        z-index: 1;
     }
 
 </style>
