@@ -12,6 +12,7 @@
         </div>
 
         <div id="countdown" class="text-center">
+            <b-progress :value="timer" :max="30" class="mb-3"></b-progress>
             <h1 v-if="!this.stop">{{timer}}</h1>
             <b-button v-if="!this.stop" :disabled="!this.clicked" @click="stopTimer()">Here !</b-button>
             <div v-if="this.stop">
