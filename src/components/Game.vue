@@ -12,12 +12,13 @@
         </div>
 
         <div id="countdown" class="text-center">
+            <h2>Question {{index + 1}}/{{maxIndex}}</h2>
+            <b-progress :value="timer" :max="30" class="mb-3"></b-progress>
             <h1 v-if="!this.stop">{{timer}}</h1>
             <b-button v-if="!this.stop" :disabled="!this.clicked" @click="stopTimer()">Here !</b-button>
             <div v-if="this.stop">
                 <h1>+ {{pts}} pts</h1>
                 <h1>Score : {{score}}</h1>
-                <h2>Question {{index + 1}}/{{maxIndex}}</h2>
                 <b-button @click="resetMap()">Next !</b-button>
             </div>
         </div>
@@ -82,6 +83,9 @@ export default {
       difficulty: 0,
       city: {},
       imgNumber: 0,
+      clickedMarkerIcon: L.icon({
+        iconUrl: 'https://image.flaticon.com/icons/svg/33/33622.svg'
+      })
     }
   },
   mounted () {
@@ -136,15 +140,16 @@ export default {
     },
     displaySolution(){
       this.$refs.map.mapObject.dragging.disable()
-      this.line = new L.Polyline([this.clickedMarker.getLatLng(), this.marker.getLatLng()])
-      this.$refs.map.mapObject.addLayer(this.line)
+
+      if(this.clickedMarker !== null) {
+        this.line = new L.Polyline([this.clickedMarker.getLatLng(), this.marker.getLatLng()])
+        this.$refs.map.mapObject.addLayer(this.line)
+      }
 
       this.marker.addTo(this.$refs.map.mapObject)
 
       if(this.clickedMarker !== null){
         this.distance = Math.round(10* this.clickedMarker.getLatLng().distanceTo(this.marker.getLatLng()))/10
-      } else {
-        this.distance = 600
       }
 
       let options = {
@@ -152,9 +157,11 @@ export default {
         closeButton: false,
         closeOnClick: false
       }
-      this.popup = L.popup(options)
-        .setLatLng([(this.marker.getLatLng().lat + this.clickedMarker.getLatLng().lat)/2, (this.marker.getLatLng().lng + this.clickedMarker.getLatLng().lng)/2])
-        .setContent(this.distance + ' meters').openOn(this.$refs.map.mapObject)
+      if(this.distance !== null){
+        this.popup = L.popup(options)
+          .setLatLng([(this.marker.getLatLng().lat + this.clickedMarker.getLatLng().lat)/2, (this.marker.getLatLng().lng + this.clickedMarker.getLatLng().lng)/2])
+          .setContent(this.distance + ' meters').openOn(this.$refs.map.mapObject)
+      }
 
       this.calculateScore()
       this.resetTimer()
