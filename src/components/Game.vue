@@ -12,22 +12,24 @@
         </div>
 
         <div id="countdown" class="text-center">
+            <h2>Question {{index + 1}}/{{maxIndex}}</h2>
+            <b-progress :value="timer" :max="30" class="mb-3"></b-progress>
             <h1 v-if="!this.stop">{{timer}}</h1>
             <b-button v-if="!this.stop" :disabled="!this.clicked" @click="stopTimer()">Here !</b-button>
             <div v-if="this.stop">
                 <h1>+ {{pts}} pts</h1>
                 <h1>Score : {{score}}</h1>
-                <h2>Question {{index + 1}}/{{maxIndex}}</h2>
                 <b-button @click="resetMap()">Next !</b-button>
             </div>
         </div>
 
         <div id="geo-map">
-          <v-map ref="map" id="map" :zoom=15 :center="[48.6915784, 6.1767092]" :zoomControl=false :options="option" @l-click="placeMarker">
-      		<v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
-          </v-map>
+        <v-map ref="map" id="map" :zoom=zoom :center=center :zoomControl=false :options="option" @l-click="placeMarker">
+        <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+        </v-map>
         </div>
       </div>
+
       <div v-else>
         <h1>You completed this series !</h1>
         <h1>Your final score : {{score}}</h1>
@@ -55,17 +57,16 @@ export default {
     'v-marker': Vue2Leaflet.Marker
   },
   created () {
-    this.difficulty = this.$store.getters['game/getDifficulty']
     this.count()
   },
   data () {
     return {
       msg: 'This is the game page',
       zoom:13,
-      center: L.latLng(48.6915784, 6.1767092),
+      center: null,
       url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      marker: L.marker(L.latLng(48.6915784, 6.1767092)),
+      marker: null,
       option: {zoomControl : false, touchZoom : false, doubleClickZoom : false, scrollWheelZoom : false, boxZoom : false, keyboard : false},
       clicked : false,
       clickedMarker : null,
@@ -77,21 +78,42 @@ export default {
       distance: null,
       score: 0,
       index: 0,
-      maxIndex: 10,
+      maxIndex: null,
       pts:0,
-      difficulty: 0
+      difficulty: 0,
+      city: {},
+      imgNumber: 0,
+      clickedMarkerIcon: L.icon({
+        iconUrl: 'https://image.flaticon.com/icons/svg/33/33622.svg'
+      })
     }
   },
   mounted () {
+
     this.$refs.map.mapObject.dragging.disable();
+
+    this.difficulty = this.$store.getters['game/getDifficulty']
+    this.city = this.$store.getters['game/getCity']
+    this.maxIndex = this.city.photos.length
+
+    let position = this.city.mapOptions.split(';')
+
+    this.center = L.latLng(position[0], position[1])
+    this.zoom = Number(position[2])
+
+    this.nextImage(this.imgNumber)
+
   },
   methods :{
-  	placeMarker (event) {
+    nextImage (imgNumber){
+      let markerPosition = this.city.photos[imgNumber].position.split(';')
+      this.marker = L.marker(L.latLng(markerPosition[0], markerPosition[1]))
+      this.img = 'http://localhost:8080/geoquizzapi/api/photos/' + this.city.photos[imgNumber].id
+    },
+    placeMarker (event) {
       if(!this.stop){
         if (!this.clicked){
-
           this.clicked = true
-
           this.clickedMarker = L.marker(event.latlng)
           this.clickedMarker.addTo(this.$refs.map.mapObject)
         }else{
@@ -99,7 +121,7 @@ export default {
         }
       }
 
-  	},
+    },
     setTimer (sec) {
       this.timer = sec
     },
@@ -118,31 +140,31 @@ export default {
     },
     displaySolution(){
       this.$refs.map.mapObject.dragging.disable()
-      this.line = new L.Polyline([this.clickedMarker.getLatLng(), this.marker.getLatLng()])
-      this.$refs.map.mapObject.addLayer(this.line)
 
       this.marker.addTo(this.$refs.map.mapObject)
 
       if(this.clickedMarker !== null){
+        this.line = new L.Polyline([this.clickedMarker.getLatLng(), this.marker.getLatLng()])
+        this.$refs.map.mapObject.addLayer(this.line)
         this.distance = Math.round(10* this.clickedMarker.getLatLng().distanceTo(this.marker.getLatLng()))/10
-      } else {
-        this.distance = 600
+        let options = {
+          autoClose: false,
+          closeButton: false,
+          closeOnClick: false
+        }
+        if(this.distance !== null){
+          this.popup = L.popup(options)
+            .setLatLng([(this.marker.getLatLng().lat + this.clickedMarker.getLatLng().lat)/2, (this.marker.getLatLng().lng + this.clickedMarker.getLatLng().lng)/2])
+            .setContent(this.distance + ' meters').openOn(this.$refs.map.mapObject)
+        }
+
       }
 
-      let options = {
-        autoClose: false,
-        closeButton: false,
-        closeOnClick: false
-      }
-      this.popup = L.popup(options)
-        .setLatLng([(this.marker.getLatLng().lat + this.clickedMarker.getLatLng().lat)/2, (this.marker.getLatLng().lng + this.clickedMarker.getLatLng().lng)/2])
-        .setContent(this.distance + ' meters').openOn(this.$refs.map.mapObject)
 
       this.calculateScore()
       this.resetTimer()
     },
     calculateScore () {
-      console.log(this.difficulty)
       switch(this.difficulty){
         case '0':
           if(this.distance < 300){
@@ -188,15 +210,20 @@ export default {
     resetMap () {
       this.index += 1
       this.$refs.map.mapObject.removeLayer(this.marker)
-      this.$refs.map.mapObject.removeLayer(this.clickedMarker)
-      this.$refs.map.mapObject.removeLayer(this.popup)
-      this.$refs.map.mapObject.removeLayer(this.line)
+      if(this.clickedMarker !== null){
+        this.$refs.map.mapObject.removeLayer(this.clickedMarker)
+        this.$refs.map.mapObject.removeLayer(this.popup)
+        this.$refs.map.mapObject.removeLayer(this.line)
+      }
       this.pts = 0
       this.stop = false
       this.clicked = false
       this.clickedMarker = null
-      this.marker = L.marker(L.latLng(48.6915784, 6.1767092))
       this.$refs.map.mapObject.dragging.enable()
+
+      this.imgNumber++
+      this.nextImage(this.imgNumber)
+
       this.count()
 
     },
