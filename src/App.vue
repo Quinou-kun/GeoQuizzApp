@@ -11,6 +11,9 @@ export default {
   name: 'App',
   components: {
     'navbar': Navbar
+  },
+  created () {
+    this.$store.dispatch('game/initSeries')
   }
 }
 </script>
