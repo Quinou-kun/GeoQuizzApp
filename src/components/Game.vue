@@ -110,7 +110,7 @@ export default {
       this.marker = L.marker(L.latLng(markerPosition[0], markerPosition[1]))
       this.img = 'http://localhost:8080/geoquizzapi/api/photos/' + this.city.photos[imgNumber].id
     },
-    placeMarker (event) {
+  	placeMarker (event) {
       if(!this.stop){
         if (!this.clicked){
           this.clicked = true
@@ -147,6 +147,7 @@ export default {
         this.line = new L.Polyline([this.clickedMarker.getLatLng(), this.marker.getLatLng()])
         this.$refs.map.mapObject.addLayer(this.line)
         this.distance = Math.round(10* this.clickedMarker.getLatLng().distanceTo(this.marker.getLatLng()))/10
+
         let options = {
           autoClose: false,
           closeButton: false,
@@ -160,6 +161,7 @@ export default {
 
       }
 
+      }
 
       this.calculateScore()
       this.resetTimer()
