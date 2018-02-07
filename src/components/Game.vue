@@ -2,26 +2,34 @@
 <!-- eslint-disable -->
     <div id="game">
       <div v-if="this.index !== this.maxIndex">
-        <div>
-            <p v-if="difficulty === '0'">EASY MODE</p>
-            <p v-if="difficulty === '1'">NORMAL MODE</p>
-            <p v-if="difficulty === '2'">HARDCORE MODE</p>
-        </div>
+
         <div id="img">
-            <b-img :src="img" fluid alt="Responsive image"></b-img>
+            <b-card no-body bg-variant="dark"
+                    text-variant="white"
+                    class="game-content text-center">
+                <b-card-header id="countdown" class="text-center">
+                    <h2>Question {{index + 1}}/{{maxIndex}}</h2>
+                    <h5 v-if="difficulty === '0'">({{city.ville}}, EASY MODE)</h5>
+                    <h5 v-if="difficulty === '1'">({{city.ville}}, NORMAL MODE)</h5>
+                    <h5 v-if="difficulty === '2'">({{city.ville}}, HARDCORE MODE)</h5>
+                </b-card-header>
+                <b-card-body>
+                    <b-progress :value="timer" :max="30" class="mb-3" variant="danger"></b-progress>
+                    <h1>{{timer}}</h1>
+                    <b-img :src="img" alt="Photo" id="photo"></b-img>
+                    <div v-if="this.stop">
+                        <h1>+ {{pts}} pts</h1>
+                        <b-button @click="resetMap()" variant="danger">Next !</b-button>
+                    </div>
+                    <div v-else>
+                        <b-button v-if="!this.clicked" disabled variant="danger">Until validate, put a marker !</b-button>
+                        <b-button v-else @click="stopTimer()" variant="danger">Here !</b-button>
+                    </div>
+                </b-card-body>
+            </b-card>
         </div>
 
-        <div id="countdown" class="text-center">
-            <h2>Question {{index + 1}}/{{maxIndex}}</h2>
-            <b-progress :value="timer" :max="30" class="mb-3"></b-progress>
-            <h1 v-if="!this.stop">{{timer}}</h1>
-            <b-button v-if="!this.stop" :disabled="!this.clicked" @click="stopTimer()">Here !</b-button>
-            <div v-if="this.stop">
-                <h1>+ {{pts}} pts</h1>
-                <h1>Score : {{score}}</h1>
-                <b-button @click="resetMap()">Next !</b-button>
-            </div>
-        </div>
+
 
         <div id="geo-map">
         <v-map ref="map" id="map" :zoom=zoom :center=center :zoomControl=false :options="option" @l-click="placeMarker">
@@ -160,11 +168,7 @@ export default {
         }
 
       }
-
-      }
-
       this.calculateScore()
-      this.resetTimer()
     },
     calculateScore () {
       switch(this.difficulty){
@@ -210,6 +214,7 @@ export default {
       this.timer = 30
     },
     resetMap () {
+      this.resetTimer()
       this.index += 1
       this.$refs.map.mapObject.removeLayer(this.marker)
       if(this.clickedMarker !== null){
@@ -247,8 +252,9 @@ export default {
 @import "../../node_modules/leaflet/dist/leaflet.css";
 
     #geo-map{
-        width: 50vw;
-        height: 80vh;
+        width: 51vw;
+        height: calc(100vh - 140px);
+        float : right;
     }
     #geo-map, #img, #countdown{
         vertical-align : middle;
@@ -260,6 +266,17 @@ export default {
     }
 
     #game{
-        background-color : white;
+        background-color : black;
+    }
+
+    #photo{
+        height: auto;
+        padding-bottom : 2.5%;
+        width : 70%;
+        max-height : 70%;
+    }
+    .game-content{
+        width : 48vw;
+        height: calc(100vh - 140px);
     }
 </style>
