@@ -75,7 +75,7 @@ export default {
       url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       marker: null,
-      option: {zoomControl : false, touchZoom : false, doubleClickZoom : false, scrollWheelZoom : false, boxZoom : false, keyboard : false},
+      option: {zoomControl : false, touchZoom : false, doubleClickZoom : false, boxZoom : false, keyboard : false},
       clicked : false,
       clickedMarker : null,
       popup : null,
@@ -97,8 +97,6 @@ export default {
     }
   },
   mounted () {
-
-    this.$refs.map.mapObject.dragging.disable();
 
     this.difficulty = this.$store.getters['game/getDifficulty']
     this.city = this.$store.getters['game/getCity']
@@ -171,43 +169,47 @@ export default {
       this.calculateScore()
     },
     calculateScore () {
-      switch(this.difficulty){
-        case '0':
-          if(this.distance < 300){
-            this.pts += 5
-          } else if(this.distance < 500) {
-            this.pts += 3
-          } else if(this.distance < 700){
-            this.pts += 1
-          }
-          break
-        case '1':
-          if(this.distance < 150){
-            this.pts += 5
-          } else if(this.distance < 300) {
-            this.pts += 3
-          } else if(this.distance < 500){
-            this.pts += 1
-          }
-          break
-        case '2':
-          if(this.distance < 50){
-            this.pts += 5
-          } else if(this.distance < 150) {
-            this.pts += 3
-          } else if(this.distance < 300){
-            this.pts += 1
-          }
-          break
-        default:
-          break
-      }
+      if(this.distance == null){
+        this.pts = 0
+      } else {
+        switch(this.difficulty){
+          case '0':
+            if(this.distance < 300){
+              this.pts += 5
+            } else if(this.distance < 500) {
+              this.pts += 3
+            } else if(this.distance < 700){
+              this.pts += 1
+            }
+            break
+          case '1':
+            if(this.distance < 150){
+              this.pts += 5
+            } else if(this.distance < 300) {
+              this.pts += 3
+            } else if(this.distance < 500){
+              this.pts += 1
+            }
+            break
+          case '2':
+            if(this.distance < 50){
+              this.pts += 5
+            } else if(this.distance < 150) {
+              this.pts += 3
+            } else if(this.distance < 300){
+              this.pts += 1
+            }
+            break
+          default:
+            break
+        }
 
-      if(this.timer >= 20){
-        this.pts*=4
-      } else if(this.timer >= 10){
-        this.pts*=2
-      }
+        if(this.timer >= 20){
+          this.pts*=4
+        } else if(this.timer >= 10){
+          this.pts*=2
+        }
+    }
       this.score += this.pts
     },
     resetTimer () {
