@@ -150,7 +150,9 @@ export default {
     this.difficulty = this.$store.getters['game/getDifficulty']
     this.city = this.$store.getters['game/getCity']
     
-    axios.post("http://localhost:8080/geoquizzapi/api/games?idSerie=" + this.city.id).then(response => {
+    axios.post("http://localhost:8080/geoquizzapi/api/games?idSerie=" + this.city.id +
+                "&mode=" + this.difficulty
+    ).then(response => {
       this.token = response.data.token
       this.gameId = response.data.id
     }).catch(error => {
