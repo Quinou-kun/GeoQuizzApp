@@ -98,7 +98,7 @@ export default {
         text-align : center;
         background-color : rgba(0,0,0,0.8);
         color : white;
-        height : calc(100vh - 140px)
+        height : calc(100% - 140px)
     }
 
     #new-container{

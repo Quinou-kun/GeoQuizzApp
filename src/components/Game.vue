@@ -259,7 +259,7 @@ export default {
 
     #geo-map{
         width: 51vw;
-        height: calc(100vh - 140px);
+        height: calc(100% - 140px);
         float : right;
     }
     #geo-map, #img, #countdown{
@@ -283,6 +283,6 @@ export default {
     }
     .game-content{
         width : 48vw;
-        height: calc(100vh - 140px);
+        height: calc(100% - 140px);
     }
 </style>
