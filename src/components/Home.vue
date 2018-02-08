@@ -37,7 +37,8 @@ export default {
         text-align : center;
         color : white;
         background-color : rgba(0,0,0,0.8);
-        height : calc(100vh - 140px)
+        height : calc(100vh - 140px);
+        overflow-y: auto
     }
     #home-description, #play-container{
         background-color : rgba(0,0,0,0.3);

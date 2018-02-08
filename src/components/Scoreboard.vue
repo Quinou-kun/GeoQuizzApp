@@ -1,10 +1,10 @@
 <template>
-    <div id="home-container">
+    <div id="scoreboard-container">
         <b-container>
             <b-card no-body id="scoreboard">
                 <b-tabs pills card>
                     <b-tab :key="game" v-for="game in games" :title="game.ville">
-                        <b-tabs pills card>
+                        <b-tabs pills card  class="test">
 
                             <b-tab title="Easy">
                                 <b-table head-variant="light" dark bordered responsive :items="game.scores.easy" :fields="fields"></b-table>
@@ -15,9 +15,8 @@
                             </b-tab>
 
                             <b-tab title="Hard">
-                                <b-table head-variant="light" dark bordered responsive :items="game.scores.hard" :fields="fields"></b-table>                                
+                                <b-table head-variant="light" dark bordered responsive :items="game.scores.hard" :fields="fields"></b-table>
                             </b-tab>
-
                         </b-tabs>
                     </b-tab>
                 </b-tabs>
@@ -105,15 +104,20 @@ export default {
 
 <style scoped>
     
-    #home-container{
+    #scoreboard-container{
         background-color : rgba(0,0,0,0.8);
         height : calc(100vh - 140px);
+        overflow-y: auto
     }
 
     #scoreboard{
         background-color : rgba(0,0,0,0.3);
         border-radius : 10px;
         font-size : 1.2em;
+    }
+
+    .test a{
+        background-color :red
     }
 </style>
 
