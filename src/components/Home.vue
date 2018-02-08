@@ -5,7 +5,7 @@
                         header="<h2>Do you want to play ?</h2>"
                         text-variant="white"
                         class="home-content text-center">
-                    <b-button to="/new" variant="danger">Play now !</b-button>
+                    <b-button to="/new" variant="danger" size="lg">Play now !</b-button>
                 </b-card>
             </div>
             <div id="home-description">
