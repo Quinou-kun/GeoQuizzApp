@@ -14,7 +14,7 @@ require('bootstrap/dist/css/bootstrap.css')
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
-	iconUrl : require('leaflet/dist/images/marker-icon.png')
+		iconUrl : require('./assets/marker/marker-icon.png')
 })
 
 Vue.config.productionTip = false
