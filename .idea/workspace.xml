@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="17a52ab6-0ae8-42dd-a8a8-ac7b9da8079d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Game.vue" afterPath="$PROJECT_DIR$/src/components/Game.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/New.vue" afterPath="$PROJECT_DIR$/src/components/New.vue" />
-    </list>
+    <list default="true" id="17a52ab6-0ae8-42dd-a8a8-ac7b9da8079d" name="Default" comment="" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -503,12 +499,12 @@
       <updated>1517825500988</updated>
       <workItem from="1517825502573" duration="234000" />
       <workItem from="1517842759572" duration="8368000" />
-      <workItem from="1517905578027" duration="60250000" />
+      <workItem from="1517905578027" duration="60304000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79372000" />
+    <option name="totallyTimeSpent" value="79426000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1984" y="-11" width="1857" height="1092" extended-state="6" />
