@@ -104,7 +104,7 @@ export default {
       url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
       attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       marker: null,
-      option: {zoomControl : false, touchZoom : false, doubleClickZoom : false, boxZoom : false, keyboard : false},
+      option: {touchZoom : false, doubleClickZoom : false, boxZoom : false, keyboard : false},
       clicked : false,
       clickedMarker : null,
       popup : null,
@@ -124,7 +124,7 @@ export default {
       clickIcon : new L.icon({
             iconUrl: require('../assets/marker/clicked_marker-icon.png'),
             iconAnchor: [13,40]
-      })
+      }),
       fieldsScore: [ 'QUESTION', 'DISTANCE', 'POINTS', 'TIMER MULTIPLIER', 'TOTAL'],
       itemsScore: [],
     }
