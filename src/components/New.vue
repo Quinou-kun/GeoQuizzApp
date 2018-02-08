@@ -21,17 +21,20 @@
                     <b-form-radio-group v-model="difficulty" buttons button-variant="outline-danger" size="lg">
                         <b-form-radio value='0' >EASY</b-form-radio>
                         <b-form-radio value='1' >NORMAL</b-form-radio>
-                        <b-form-radio value='2' >HARDCORE</b-form-radio>
+                        <b-form-radio value='2' >HARD</b-form-radio>
                     </b-form-radio-group>
                 </b-form-group>
                 <div v-if="difficulty === '0'">
                     <b-table striped hover :items="itemsEasy" :fields="fields"></b-table>
+                    <h5>Number of pictures : 5</h5>
                 </div>
                 <div v-if="difficulty === '1'">
                     <b-table striped hover :items="itemsNormal" :fields="fields"></b-table>
+                    <h5>Number of pictures : 10</h5>
                 </div>
                 <div v-if="difficulty === '2'">
                     <b-table striped hover :items="itemsHardcore" :fields="fields"></b-table>
+                    <h5>Number of pictures : 20</h5>
                 </div>
             </b-card>
 
@@ -57,9 +60,9 @@ export default {
       msg: 'This is the new game page',
       difficulty: '1',
       city: {},
-      fields: [ 'DISTANCE', 'POINTS' ],
+      fields: [ 'DISTANCE', 'POINTS'],
       itemsEasy: [
-        { 'DISTANCE': '300 meters', 'POINTS': '+5'},
+        { 'DISTANCE': '300 meters', 'POINTS': '+5' },
         { 'DISTANCE': '500 meters', 'POINTS': '+3'},
         { 'DISTANCE': '700 meters', 'POINTS': '+1'}
       ],
@@ -85,7 +88,7 @@ export default {
   },
   methods: {
     setGame () {
-      this.$store.dispatch('game/setGame', {difficulty: this.difficulty, city: this.city}).then(response => {
+      this.$store.dispatch('game/setGame', {difficulty: this.difficulty, city: this.city}).then((d) => {
         this.$router.push({name: 'Game'})
       })
     }
@@ -98,7 +101,8 @@ export default {
         text-align : center;
         background-color : rgba(0,0,0,0.8);
         color : white;
-        height : calc(100vh - 140px)
+        height : calc(100vh - 140px);
+        overflow-y: auto
     }
 
     #new-container{

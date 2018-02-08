@@ -5,7 +5,7 @@
                         header="<h2>Do you want to play ?</h2>"
                         text-variant="white"
                         class="home-content text-center">
-                    <b-button to="/new" variant="danger">Play now !</b-button>
+                    <b-button to="/new" variant="danger" size="lg">Play now !</b-button>
                 </b-card>
             </div>
             <div id="home-description">
@@ -37,7 +37,8 @@ export default {
         text-align : center;
         color : white;
         background-color : rgba(0,0,0,0.8);
-        height : calc(100vh - 140px)
+        height : calc(100vh - 140px);
+        overflow-y: auto
     }
     #home-description, #play-container{
         background-color : rgba(0,0,0,0.3);

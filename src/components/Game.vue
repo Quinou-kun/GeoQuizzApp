@@ -1,6 +1,6 @@
 <template>
 <!-- eslint-disable -->
-    <div>
+    <div id="game-container">
         <div id="game"  v-if="this.index !== this.maxIndex">
           <div>
             <div id="img">
@@ -20,11 +20,12 @@
                         <b-img :src="img" alt="Photo" id="photo"></b-img>
                         <div v-if="this.stop">
                             <h1>+ {{pts}} pts</h1>
-                            <b-button @click="resetMap()" variant="danger">Next !</b-button>
+                            <b-button @click="resetMap()" variant="danger" size="lg">Next !</b-button>
                         </div>
                         <div v-else>
-                            <b-button v-if="!this.clicked" disabled variant="danger">Until validate, put a marker !</b-button>
-                            <b-button v-else @click="stopTimer()" variant="danger">Here !</b-button>
+                            <b-button v-if="!this.clicked" disabled variant="danger" size="lg" class="mr-3">Until validate, put a marker !</b-button>
+                            <b-button v-else @click="stopTimer(false)" variant="danger" size="lg" class="mr-3">Here !</b-button>
+                            <b-button v-if="!this.stop" @click="stopTimer(true)" size="lg">I give up !</b-button>
                         </div>
                     </b-card-body>
                 </b-card>
@@ -41,7 +42,7 @@
       <div v-else class="game-finished">
           <div class="game-finished-container">
               <b-card bg-variant="dark"
-                      header="<h3>You completed this sery !</h3>"
+                      header="<h3>You completed this series !</h3>"
                       text-variant="white"
                       class="home-content text-center">
 
@@ -54,26 +55,36 @@
                 <h3>{{score}} pts</h3>
               </b-card>
               <b-card bg-variant="dark"
-                      header="<h3>Want to save your score ?</h3>"
+                      header="<h3>What do you want to do now ?</h3>"
                       text-variant="white"
                       class="home-content text-center">
                   <b-form>
-                      <label for="pseudo-input"><h4>Your name :</h4></label>
-                      <b-input class="text-center" type="text" id="pseudo-input" required></b-input>
-                      <b-button type="submit" id="pseudo-input" required variant="danger">Save my score</b-button>
+                      <b-button v-b-modal.saveScore variant="success">Save my score</b-button>
+                      <b-button variant="danger" to="/new">Play again !</b-button>
+                      <b-button to="/">Go home</b-button>
                   </b-form>
-              </b-card>
-              <b-card no-body
-                      bg-variant="dark"
-                      text-variant="white"
-                      class="home-content text-center">
-                  <b-card-header>
-                    <h3>Want to start a new game ? <b-button variant="danger" to="/new">Click here</b-button></h3>
-                  </b-card-header>
               </b-card>
           </div>
       </div>
 
+      <b-modal id="saveScore" title="Save your score" ref="scoreModal"
+                header-bg-variant="dark" 
+                header-text-variant="light"
+                body-bg-variant="dark"
+                body-text-variant="light"
+                footer-bg-variant="dark"
+                footer-text-variant="light">
+        <div class="d-block">
+          <p hidden id="errorMessage"></p>
+          <b-input-group prepend="Name">
+            <b-form-input id="playerName"></b-form-input>
+          </b-input-group>
+        </div>
+        <div slot="modal-footer">
+          <b-btn variant="success" @click="saveScore">Save</b-btn>
+          <b-btn variant="danger" @click="hideModal">Cancel</b-btn>        
+        </div>
+      </b-modal>
     </div>
 </template>
 
@@ -81,6 +92,7 @@
 /* eslint-disable */
 import Vue2Leaflet from 'vue2-leaflet';
 import Vue from 'vue';
+import axios from 'axios'
 
 Vue.component('v-map', Vue2Leaflet.Map);
 Vue.component('v-tilelayer', Vue2Leaflet.TileLayer);
@@ -121,18 +133,34 @@ export default {
       multiplier: 1,
       city: {},
       imgNumber: 0,
+      token: "",
+      gameId: "",
+      clickedMarkerIcon: L.icon({
+        iconUrl: 'https://image.flaticon.com/icons/svg/33/33622.svg'
+      }),
       clickIcon : new L.icon({
             iconUrl: require('../assets/marker/clicked_marker-icon.png'),
             iconAnchor: [13,40]
       }),
       fieldsScore: [ 'QUESTION', 'DISTANCE', 'POINTS', 'TIMER MULTIPLIER', 'TOTAL'],
       itemsScore: [],
+      giveup: false
     }
   },
   mounted () {
 
     this.difficulty = this.$store.getters['game/getDifficulty']
     this.city = this.$store.getters['game/getCity']
+
+    axios.post("http://localhost:8080/geoquizzapi/api/games?idSerie=" + this.city.id +
+                "&mode=" + this.difficulty
+    ).then(response => {
+      this.token = response.data.token
+      this.gameId = response.data.id
+    }).catch(error => {
+      console.log(error)
+    })
+
     this.maxIndex = this.city.photos.length
 
     let position = this.city.mapOptions.split(';')
@@ -209,13 +237,12 @@ export default {
       } else if(this.timer >= 10){
         this.multiplier = 2
       }
+
       this.calculateScore()
-      let scoreboard = { 'QUESTION':this.index + 1, 'DISTANCE':this.distance +' meters', 'POINTS':this.pts, 'TIMER MULTIPLIER':'x' + this.multiplier, 'TOTAL':this.pts*this.multiplier}
-      this.itemsScore.push(scoreboard)
 
     },
     calculateScore () {
-      if(this.distance == null){
+      if(this.distance === null){
         this.pts = 0
       } else {
         switch(this.difficulty){
@@ -249,14 +276,29 @@ export default {
           default:
             break
         }
-        this.pts*=this.multiplier
-    }
+      }
+      let distanceValue = ''
+      let multiplierValue = '-'
+      if(this.distance === null){
+        if(this.giveup){
+          distanceValue = 'You gave up !'
+        }else {
+          distanceValue = 'No marker put !'
+        }
+      }else{
+        multiplierValue = 'x' + this.multiplier
+        distanceValue = this.distance +' meters'
+      }
+      let scoreboard = { 'QUESTION':this.index + 1, 'DISTANCE':distanceValue, 'POINTS':this.pts, 'TIMER MULTIPLIER':multiplierValue, 'TOTAL':this.pts*this.multiplier}
+      this.itemsScore.push(scoreboard)
+      this.pts*=this.multiplier
       this.score += this.pts
     },
     resetTimer () {
       this.timer = 30
     },
     resetMap () {
+      this.giveup = false
       this.resetTimer()
       this.index += 1
       this.$refs.map.mapObject.removeLayer(this.marker)
@@ -275,19 +317,45 @@ export default {
 
       this.imgNumber++
       this.nextImage(this.imgNumber)
-
+      this.distance = null;
       this.count()
 
     },
-    stopTimer () {
-      if(this.clicked){
-        this.stop = !this.stop  
-      } 
+    stopTimer (giveup) {
+      if(this.clicked) {
+        if(giveup){
+          this.$refs.map.mapObject.removeLayer(this.clickedMarker)
+          this.clickedMarker = null
+        }
+      }
+      this.giveup = giveup
+      this.stop = !this.stop
     },
     saveScore () {
-      alert(this.score)
-    }
+      let playerName = document.getElementById("playerName").value;
+      let score = this.score
 
+      let nameRegex = /^([\w-]){1,20}$/
+      if(! playerName.match(nameRegex))
+      {
+        alert("Invalid player name !\n" +
+              "Your player name must be 20 character long at most, and only contain letters, numbers, - or _.")
+      }
+      else 
+      {
+        axios.put("http://localhost:8080/geoquizzapi/api/games/" + this.gameId + 
+          "?token=" + this.token +
+          "&score=" + score +
+          "&playerName=" + playerName
+        ).then(response => {
+          this.hideModal();
+          this.$router.push('/')
+        })
+      }
+    },
+    hideModal () {
+      this.$refs.scoreModal.hide()
+    }
   }
 }
 </script>
@@ -296,13 +364,32 @@ export default {
 /* eslint-disable */
 @import "../../node_modules/leaflet/dist/leaflet.css";
 
-    #geo-map{
-        width: 51vw;
+    .leaflet-grab{
+        cursor : move;
+    }
+    .leaflet-container{
+        cursor: url('../assets/marker/clicked_marker-icon.png')13 40, pointer;
+    }
+    .leaflet-popup-content-wrapper, .leaflet-popup-tip{
+        opacity : 0.7;
+    }
+    .leaflet-popup-content{
+        font-weight: bolder;
+        font-size : 1.5em;
+    }
+    #game-container{
+        background-color : rgba(0,0,0,0.8);
+        overflow-y: auto;
         height: calc(100vh - 140px);
+    }
+    #geo-map{
+        height: calc(100vh - 140px);
+        width: 51vw;
         float : right;
         cursor: help !important;
     
     }
+
     #geo-map, #img, #countdown{
         vertical-align : middle;
         display : inline-block;
@@ -310,10 +397,6 @@ export default {
     #countdown{
         text-align : center;
         padding : 0 2vw;
-    }
-
-    #game{
-        background-color : black;
     }
 
     #photo{
@@ -329,7 +412,6 @@ export default {
 
     .game-finished{
         height : calc(100vh - 140px);
-        background : rgba(0,0,0,0.7);
     }
 
     .game-finished-container{

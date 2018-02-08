@@ -1,10 +1,23 @@
 <template>
-    <div id="home-container">
+    <div id="scoreboard-container">
         <b-container>
             <b-card no-body id="scoreboard">
                 <b-tabs pills card>
-                    <b-tab v-for="game in games" :title="game.ville">
-                        <b-table head-variant="light" dark bordered responsive :items="game.scores" :fields="fields"></b-table>
+                    <b-tab :key="game" v-for="game in games" :title="game.ville">
+                        <b-tabs pills card>
+
+                            <b-tab title="Easy">
+                                <b-table head-variant="light" dark bordered responsive :items="game.scores.easy" :fields="fields"></b-table>
+                            </b-tab>
+
+                            <b-tab title="Normal">
+                                <b-table head-variant="light" dark bordered responsive :items="game.scores.normal" :fields="fields"></b-table>
+                            </b-tab>
+
+                            <b-tab title="Hard">
+                                <b-table head-variant="light" dark bordered responsive :items="game.scores.hard" :fields="fields"></b-table>
+                            </b-tab>
+                        </b-tabs>
                     </b-tab>
                 </b-tabs>
             </b-card>
@@ -22,7 +35,9 @@ export default {
     return {
         msg: 'This is the register page',
         games: [],
-        fields: [ 'player', 'score' ],
+        fields: [ 'rank', 'player', 'score' ],
+        index: 1
+
     }
   },
   created () {
@@ -31,39 +46,73 @@ export default {
                 let game = {}
                 game.ville = serie.ville
 
-                game.scores = []
+                game.scores = {}
 
-                axios.get("http://localhost:8080/geoquizzapi/api/games", {params: {idSerie: serie.id}}).then(response => {
-                    response.data.games.forEach(g => {
+                // Scores in easy mode
+                game.scores.easy = []
+                axios.get("http://localhost:8080/geoquizzapi/api/games", {params: {idSerie: serie.id, mode: "0"}}).then(response => {
+
+                  this.index = 1
+                  response.data.games.forEach(g => {
                         let score = {}
                         score.player = g.player
                         score.score = g.score
-                        
-                        game.scores.push(score)
+                        score.rank = this.index
+                        this.index++
+                        game.scores.easy.push(score)
                     })
                 }).catch(error => {
                     console.log(error)
                 })
 
+
+                // Scores in normal mode
+                game.scores.normal = []
+                axios.get("http://localhost:8080/geoquizzapi/api/games", {params: {idSerie: serie.id, mode: "1"}}).then(response => {
+                  this.index = 1
+                  response.data.games.forEach(g => {
+                        let score = {}
+                        score.player = g.player
+                        score.score = g.score
+                      score.rank = this.index
+                      this.index++
+                        game.scores.normal.push(score)
+                    })
+                }).catch(error => {
+                    console.log(error)
+                })
+                // Scores in hard mode
+                game.scores.hard = []
+                axios.get("http://localhost:8080/geoquizzapi/api/games", {params: {idSerie: serie.id, mode: "2"}}).then(response => {
+
+                  this.index = 1
+                  response.data.games.forEach(g => {
+                        let score = {}
+                        score.player = g.player
+                        score.score = g.score
+                        score.rank = this.index
+                        this.index++
+                        game.scores.hard.push(score)
+                    })
+                }).catch(error => {
+                    console.log(error)
+                })
                 this.games.push(game)
                 
-                //console.log(serie)
             })
         }).catch(error => {
             console.log(error)
         })
-    },
-    methods: {
-  
     }
 }
 </script>
 
 <style scoped>
-    
-    #home-container{
+
+    #scoreboard-container{
         background-color : rgba(0,0,0,0.8);
         height : calc(100vh - 140px);
+        overflow-y: auto
     }
 
     #scoreboard{
@@ -71,5 +120,6 @@ export default {
         border-radius : 10px;
         font-size : 1.2em;
     }
+
 </style>
 
