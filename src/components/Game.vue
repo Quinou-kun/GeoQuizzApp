@@ -270,6 +270,8 @@ export default {
       this.clicked = false
       this.clickedMarker = null
       this.$refs.map.mapObject.dragging.enable()
+      this.$refs.map.mapObject.setZoom(this.zoom)
+      this.$refs.map.mapObject.panTo(this.center)
 
       this.imgNumber++
       this.nextImage(this.imgNumber)
@@ -298,6 +300,8 @@ export default {
         width: 51vw;
         height: calc(100vh - 140px);
         float : right;
+        cursor: help !important;
+    
     }
     #geo-map, #img, #countdown{
         vertical-align : middle;
