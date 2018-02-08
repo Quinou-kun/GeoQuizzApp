@@ -3,7 +3,7 @@
         <b-container>
             <b-card no-body id="scoreboard">
                 <b-tabs pills card>
-                    <b-tab v-for="game in this.games" :title="game.ville">
+                    <b-tab v-for="game in games" :title="game.ville">
                         <b-table head-variant="light" dark bordered responsive :items="game.scores" :fields="fields"></b-table>
                     </b-tab>
                 </b-tabs>
