@@ -209,9 +209,8 @@ export default {
       } else if(this.timer >= 10){
         this.multiplier = 2
       }
+
       this.calculateScore()
-      let scoreboard = { 'QUESTION':this.index + 1, 'DISTANCE':this.distance +' meters', 'POINTS':this.pts, 'TIMER MULTIPLIER':'x' + this.multiplier, 'TOTAL':this.pts*this.multiplier}
-      this.itemsScore.push(scoreboard)
 
     },
     calculateScore () {
@@ -249,6 +248,8 @@ export default {
           default:
             break
         }
+        let scoreboard = { 'QUESTION':this.index + 1, 'DISTANCE':this.distance +' meters', 'POINTS':this.pts, 'TIMER MULTIPLIER':'x' + this.multiplier, 'TOTAL':this.pts*this.multiplier}
+        this.itemsScore.push(scoreboard)
         this.pts*=this.multiplier
     }
       this.score += this.pts
