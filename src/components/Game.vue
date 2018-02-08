@@ -91,8 +91,9 @@ export default {
       difficulty: 0,
       city: {},
       imgNumber: 0,
-      clickedMarkerIcon: L.icon({
-        iconUrl: 'https://image.flaticon.com/icons/svg/33/33622.svg'
+      clickIcon : new L.icon({
+            iconUrl: require('../assets/marker/clicked_marker-icon.png'),
+            iconAnchor: [13,40]
       })
     }
   },
@@ -120,7 +121,7 @@ export default {
       if(!this.stop){
         if (!this.clicked){
           this.clicked = true
-          this.clickedMarker = L.marker(event.latlng)
+          this.clickedMarker = L.marker(event.latlng, {icon : this.clickIcon})
           this.clickedMarker.addTo(this.$refs.map.mapObject)
         }else{
           this.clickedMarker.setLatLng(event.latlng)
@@ -151,6 +152,9 @@ export default {
 
       if(this.clickedMarker !== null){
         this.line = new L.Polyline([this.clickedMarker.getLatLng(), this.marker.getLatLng()])
+        this.line.setStyle({
+         color: 'black'
+        })
         this.$refs.map.mapObject.addLayer(this.line)
         this.distance = Math.round(10* this.clickedMarker.getLatLng().distanceTo(this.marker.getLatLng()))/10
 
