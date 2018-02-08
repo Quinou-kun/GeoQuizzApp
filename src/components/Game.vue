@@ -22,7 +22,7 @@
                         <b-button @click="resetMap()" variant="danger">Next !</b-button>
                     </div>
                     <div v-else>
-                        <b-button v-if="!this.clicked" disabled variant="danger">Until validate, put a marker !</b-button>
+                        <b-button v-if="!this.clicked" disabled variant="danger">Put a marker to validate!</b-button>
                         <b-button v-else @click="stopTimer()" variant="danger">Here !</b-button>
                     </div>
                 </b-card-body>
@@ -41,10 +41,29 @@
       <div v-else>
         <h1>You completed this series !</h1>
         <h1>Your final score : {{score}}</h1>
-        <b-button @click="saveScore()">Save</b-button>
+        <b-button v-b-modal.saveScore>Save</b-button>
         <b-button to="/new">Restart</b-button>
         <b-button to="/">Home</b-button>
       </div>
+
+      <b-modal id="saveScore" title="Save your score" ref="scoreModal"
+                header-bg-variant="dark" 
+                header-text-variant="light"
+                body-bg-variant="dark"
+                body-text-variant="light"
+                footer-bg-variant="dark"
+                footer-text-variant="light">
+        <div class="d-block">
+          <p hidden id="errorMessage"></p>
+          <b-input-group prepend="Name">
+            <b-form-input id="playerName"></b-form-input>
+          </b-input-group>
+        </div>
+        <div slot="modal-footer">
+          <b-btn variant="success" @click="saveScore">Save</b-btn>
+          <b-btn variant="danger" @click="hideModal">Cancel</b-btn>        
+        </div>
+      </b-modal>
     </div>
 </template>
 
@@ -52,6 +71,7 @@
 /* eslint-disable */
 import Vue2Leaflet from 'vue2-leaflet';
 import Vue from 'vue';
+import axios from 'axios'
 
 Vue.component('v-map', Vue2Leaflet.Map);
 Vue.component('v-tilelayer', Vue2Leaflet.TileLayer);
@@ -91,6 +111,8 @@ export default {
       difficulty: 0,
       city: {},
       imgNumber: 0,
+      token: "",
+      gameId: "",
       clickedMarkerIcon: L.icon({
         iconUrl: 'https://image.flaticon.com/icons/svg/33/33622.svg'
       })
@@ -100,6 +122,14 @@ export default {
 
     this.difficulty = this.$store.getters['game/getDifficulty']
     this.city = this.$store.getters['game/getCity']
+    
+    axios.post("http://localhost:8080/geoquizzapi/api/games?idSerie=" + this.city.id).then(response => {
+      this.token = response.data.token
+      this.gameId = response.data.id
+    }).catch(error => {
+      console.log(error)
+    })
+    
     this.maxIndex = this.city.photos.length
 
     let position = this.city.mapOptions.split(';')
@@ -242,9 +272,30 @@ export default {
       } 
     },
     saveScore () {
-      alert(this.score)
-    }
+      let playerName = document.getElementById("playerName").value;
+      let score = this.score
 
+      let nameRegex = /^([\w-]){1,20}$/
+      if(! playerName.match(nameRegex))
+      {
+        alert("Invalid player name !\n" +
+              "Your player name must be 20 character long at most, and only contain letters, numbers, - or _.")
+      }
+      else 
+      {
+        axios.put("http://localhost:8080/geoquizzapi/api/games/" + this.gameId + 
+          "?token=" + this.token +
+          "&score=" + score +
+          "&playerName=" + playerName
+        ).then(response => {
+          this.hideModal();
+          this.$router.push('/')
+        })
+      }
+    },
+    hideModal () {
+      this.$refs.scoreModal.hide()
+    }
   }
 }
 </script>
