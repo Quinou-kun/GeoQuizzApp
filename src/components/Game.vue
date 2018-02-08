@@ -1,50 +1,79 @@
 <template>
 <!-- eslint-disable -->
-    <div id="game">
-      <div v-if="this.index !== this.maxIndex">
+    <div>
+        <div id="game"  v-if="this.index !== this.maxIndex">
+          <div>
+            <div id="img">
+                <b-card no-body bg-variant="dark"
+                        text-variant="white"
+                        class="game-content text-center">
+                    <b-card-header id="countdown" class="text-center">
+                        <h2>Question {{index + 1}}/{{maxIndex}}</h2>
+                        <h5 v-if="difficulty === '0'">({{city.ville}}, EASY MODE)</h5>
+                        <h5 v-if="difficulty === '1'">({{city.ville}}, NORMAL MODE)</h5>
+                        <h5 v-if="difficulty === '2'">({{city.ville}}, HARDCORE MODE)</h5>
+                    </b-card-header>
+                    <b-card-body>
+                        <b-progress :value="timer" :max="30" class="mb-3" variant="danger"></b-progress>
+                        <h1>{{timer}}</h1>
+                        <h3 v-if="this.stop">This is the {{city.photos[imgNumber].desc}}</h3>
+                        <b-img :src="img" alt="Photo" id="photo"></b-img>
+                        <div v-if="this.stop">
+                            <h1>+ {{pts}} pts</h1>
+                            <b-button @click="resetMap()" variant="danger">Next !</b-button>
+                        </div>
+                        <div v-else>
+                            <b-button v-if="!this.clicked" disabled variant="danger">Until validate, put a marker !</b-button>
+                            <b-button v-else @click="stopTimer()" variant="danger">Here !</b-button>
+                        </div>
+                    </b-card-body>
+                </b-card>
+            </div>
 
-        <div id="img">
-            <b-card no-body bg-variant="dark"
-                    text-variant="white"
-                    class="game-content text-center">
-                <b-card-header id="countdown" class="text-center">
-                    <h2>Question {{index + 1}}/{{maxIndex}}</h2>
-                    <h5 v-if="difficulty === '0'">({{city.ville}}, EASY MODE)</h5>
-                    <h5 v-if="difficulty === '1'">({{city.ville}}, NORMAL MODE)</h5>
-                    <h5 v-if="difficulty === '2'">({{city.ville}}, HARDCORE MODE)</h5>
-                </b-card-header>
-                <b-card-body>
-                    <b-progress :value="timer" :max="30" class="mb-3" variant="danger"></b-progress>
-                    <h1>{{timer}}</h1>
-                    <b-img :src="img" alt="Photo" id="photo"></b-img>
-                    <div v-if="this.stop">
-                        <h1>+ {{pts}} pts</h1>
-                        <b-button @click="resetMap()" variant="danger">Next !</b-button>
-                    </div>
-                    <div v-else>
-                        <b-button v-if="!this.clicked" disabled variant="danger">Until validate, put a marker !</b-button>
-                        <b-button v-else @click="stopTimer()" variant="danger">Here !</b-button>
-                    </div>
-                </b-card-body>
-            </b-card>
+            <div id="geo-map">
+                <v-map ref="map" id="map" :zoom=zoom :center=center :options="option" @l-click="placeMarker">
+                <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+                </v-map>
+                </div>
+          </div>
         </div>
 
+      <div v-else class="game-finished">
+          <div class="game-finished-container">
+              <b-card bg-variant="dark"
+                      header="<h3>You completed this sery !</h3>"
+                      text-variant="white"
+                      class="home-content text-center">
 
-
-        <div id="geo-map">
-        <v-map ref="map" id="map" :zoom=zoom :center=center :zoomControl=false :options="option" @l-click="placeMarker">
-        <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
-        </v-map>
-        </div>
+                  <b-table title="table" striped hover :items="itemsScore" :fields="fieldsScore"></b-table>
+              </b-card>
+              <b-card bg-variant="dark"
+                      header="<h3>Final Score</h3>"
+                      text-variant="white"
+                      class="home-content text-center">
+                <h3>{{score}} pts</h3>
+              </b-card>
+              <b-card bg-variant="dark"
+                      header="<h3>Want to save your score ?</h3>"
+                      text-variant="white"
+                      class="home-content text-center">
+                  <b-form>
+                      <label for="pseudo-input"><h4>Your name :</h4></label>
+                      <b-input class="text-center" type="text" id="pseudo-input" required></b-input>
+                      <b-button type="submit" id="pseudo-input" required variant="danger">Save my score</b-button>
+                  </b-form>
+              </b-card>
+              <b-card no-body
+                      bg-variant="dark"
+                      text-variant="white"
+                      class="home-content text-center">
+                  <b-card-header>
+                    <h3>Want to start a new game ? <b-button variant="danger" to="/new">Click here</b-button></h3>
+                  </b-card-header>
+              </b-card>
+          </div>
       </div>
 
-      <div v-else>
-        <h1>You completed this series !</h1>
-        <h1>Your final score : {{score}}</h1>
-        <b-button @click="saveScore()">Save</b-button>
-        <b-button to="/new">Restart</b-button>
-        <b-button to="/">Home</b-button>
-      </div>
     </div>
 </template>
 
@@ -89,12 +118,15 @@ export default {
       maxIndex: null,
       pts:0,
       difficulty: 0,
+      multiplier: 1,
       city: {},
       imgNumber: 0,
       clickIcon : new L.icon({
             iconUrl: require('../assets/marker/clicked_marker-icon.png'),
             iconAnchor: [13,40]
       })
+      fieldsScore: [ 'QUESTION', 'DISTANCE', 'POINTS', 'TIMER MULTIPLIER', 'TOTAL'],
+      itemsScore: [],
     }
   },
   mounted () {
@@ -113,9 +145,11 @@ export default {
   },
   methods :{
     nextImage (imgNumber){
-      let markerPosition = this.city.photos[imgNumber].position.split(';')
-      this.marker = L.marker(L.latLng(markerPosition[0], markerPosition[1]))
-      this.img = 'http://localhost:8080/geoquizzapi/api/photos/' + this.city.photos[imgNumber].id
+      if(imgNumber < this.city.photos.length){
+        let markerPosition = this.city.photos[imgNumber].position.split(';')
+        this.marker = L.marker(L.latLng(markerPosition[0], markerPosition[1]))
+        this.img = 'http://localhost:8080/geoquizzapi/api/photos/' + this.city.photos[imgNumber].id
+      }
     },
   	placeMarker (event) {
       if(!this.stop){
@@ -146,7 +180,7 @@ export default {
       }, 1000)
     },
     displaySolution(){
-      this.$refs.map.mapObject.dragging.disable()
+     this.$refs.map.mapObject.dragging.disable()
 
       this.marker.addTo(this.$refs.map.mapObject)
 
@@ -170,7 +204,15 @@ export default {
         }
 
       }
+      if(this.timer >= 20){
+        this.multiplier = 4
+      } else if(this.timer >= 10){
+        this.multiplier = 2
+      }
       this.calculateScore()
+      let scoreboard = { 'QUESTION':this.index + 1, 'DISTANCE':this.distance +' meters', 'POINTS':this.pts, 'TIMER MULTIPLIER':'x' + this.multiplier, 'TOTAL':this.pts*this.multiplier}
+      this.itemsScore.push(scoreboard)
+
     },
     calculateScore () {
       if(this.distance == null){
@@ -207,12 +249,7 @@ export default {
           default:
             break
         }
-
-        if(this.timer >= 20){
-          this.pts*=4
-        } else if(this.timer >= 10){
-          this.pts*=2
-        }
+        this.pts*=this.multiplier
     }
       this.score += this.pts
     },
@@ -259,7 +296,7 @@ export default {
 
     #geo-map{
         width: 51vw;
-        height: calc(100% - 140px);
+        height: calc(100vh - 140px);
         float : right;
     }
     #geo-map, #img, #countdown{
@@ -283,6 +320,16 @@ export default {
     }
     .game-content{
         width : 48vw;
-        height: calc(100% - 140px);
+        height: calc(100vh - 140px);
+    }
+
+    .game-finished{
+        height : calc(100vh - 140px);
+        background : rgba(0,0,0,0.7);
+    }
+
+    .game-finished-container{
+        margin: auto;
+        width : 50%;
     }
 </style>
