@@ -386,7 +386,6 @@ export default {
         height: calc(100vh - 140px);
         width: 51vw;
         float : right;
-        cursor: help !important;
     
     }
 
