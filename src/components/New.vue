@@ -5,7 +5,7 @@
             <b-card bg-variant="dark"
                     header="<h3>Choose the city you think you know</h3>"
                     text-variant="white"
-                    class="home-content text-center">
+                    class="text-center">
                 <b-form-group>
                     <b-form-radio-group v-model="city" buttons button-variant="outline-danger" size="lg">
                         <b-form-radio  v-for="serie in series.series" :value=serie >{{serie.ville}}</b-form-radio>
