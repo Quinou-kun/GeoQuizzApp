@@ -4,7 +4,21 @@
             <b-card no-body id="scoreboard">
                 <b-tabs pills card>
                     <b-tab :key="game" v-for="game in games" :title="game.ville">
-                        <b-table head-variant="light" dark bordered responsive :items="game.scores" :fields="fields"></b-table>
+                        <b-tabs pills card>
+
+                            <b-tab title="Easy">
+                                <b-table head-variant="light" dark bordered responsive :items="game.scores.easy" :fields="fields"></b-table>
+                            </b-tab>
+
+                            <b-tab title="Normal">
+                                <b-table head-variant="light" dark bordered responsive :items="game.scores.normal" :fields="fields"></b-table>
+                            </b-tab>
+
+                            <b-tab title="Hard">
+                                <b-table head-variant="light" dark bordered responsive :items="game.scores.hard" :fields="fields"></b-table>                                
+                            </b-tab>
+
+                        </b-tabs>
                     </b-tab>
                 </b-tabs>
             </b-card>
@@ -31,15 +45,46 @@ export default {
                 let game = {}
                 game.ville = serie.ville
 
-                game.scores = []
+                game.scores = {}
 
-                axios.get("http://localhost:8080/geoquizzapi/api/games", {params: {idSerie: serie.id}}).then(response => {
+                // Scores in easy mode
+                game.scores.easy = []
+                axios.get("http://localhost:8080/geoquizzapi/api/games", {params: {idSerie: serie.id, mode: "0"}}).then(response => {
                     response.data.games.forEach(g => {
                         let score = {}
                         score.player = g.player
                         score.score = g.score
                         
-                        game.scores.push(score)
+                        game.scores.easy.push(score)
+                    })
+                }).catch(error => {
+                    console.log(error)
+                })
+
+
+                // Scores in normal mode
+                game.scores.normal = []
+                axios.get("http://localhost:8080/geoquizzapi/api/games", {params: {idSerie: serie.id, mode: "1"}}).then(response => {
+                    response.data.games.forEach(g => {
+                        let score = {}
+                        score.player = g.player
+                        score.score = g.score
+                        
+                        game.scores.normal.push(score)
+                    })
+                }).catch(error => {
+                    console.log(error)
+                })
+
+                // Scores in hard mode
+                game.scores.hard = []
+                axios.get("http://localhost:8080/geoquizzapi/api/games", {params: {idSerie: serie.id, mode: "2"}}).then(response => {
+                    response.data.games.forEach(g => {
+                        let score = {}
+                        score.player = g.player
+                        score.score = g.score
+                        
+                        game.scores.hard.push(score)
                     })
                 }).catch(error => {
                     console.log(error)
@@ -47,7 +92,6 @@ export default {
 
                 this.games.push(game)
                 
-                //console.log(serie)
             })
         }).catch(error => {
             console.log(error)
