@@ -31,10 +31,10 @@
             </div>
 
             <div id="geo-map">
-            <v-map ref="map" id="map" :zoom=zoom :center=center :zoomControl=false :options="option" @l-click="placeMarker">
-            <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
-            </v-map>
-            </div>
+                <v-map ref="map" id="map" :zoom=zoom :center=center :options="option" @l-click="placeMarker">
+                <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+                </v-map>
+                </div>
           </div>
         </div>
 

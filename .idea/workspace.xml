@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="17a52ab6-0ae8-42dd-a8a8-ac7b9da8079d" name="Default" comment="" />
+=======
+    <list default="true" id="17a52ab6-0ae8-42dd-a8a8-ac7b9da8079d" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/logo/2_Flat_logo_on_transparent_310x64.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/logo/3_White_logo_on_color1_310x64.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/logo/4_Grayscale_logo_on_transparent_310x64.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/logo/5_White_logo_on_black_310x64.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/logo/6_Primary_logo_on_color2_310x64.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/assets/logo/logo.png" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Register.vue" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Signin.vue" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/App.vue" afterPath="$PROJECT_DIR$/src/App.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Game.vue" afterPath="$PROJECT_DIR$/src/components/Game.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Home.vue" afterPath="$PROJECT_DIR$/src/components/Home.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Navbar.vue" afterPath="$PROJECT_DIR$/src/components/Navbar.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/New.vue" afterPath="$PROJECT_DIR$/src/components/New.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/router/index.js" afterPath="$PROJECT_DIR$/src/router/index.js" />
+    </list>
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,11 +41,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="New.vue" pinned="false" current-in-tab="false">
+      <file leaf-file-name="New.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/New.vue">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="185">
               <caret line="42" column="20" lean-forward="false" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
+=======
+            <state relative-caret-position="75">
+              <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
               <folding />
             </state>
           </provider>
@@ -66,21 +91,29 @@
       <file leaf-file-name="App.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/App.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="406">
-              <caret line="27" column="25" lean-forward="true" selection-start-line="27" selection-start-column="25" selection-end-line="27" selection-end-column="30" />
+            <state relative-caret-position="540">
+              <caret line="27" column="31" lean-forward="false" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Game.vue" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Game.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Game.vue">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="245">
               <caret line="149" column="99" lean-forward="false" selection-start-line="149" selection-start-column="99" selection-end-line="149" selection-end-column="99" />
               <folding>
                 <element signature="e#3730#3769#0" expanded="true" />
                 <marker date="1518082765490" expanded="true" signature="4302:4308" ph="©" />
+=======
+            <state relative-caret-position="3281">
+              <caret line="260" column="32" lean-forward="false" selection-start-line="260" selection-start-column="32" selection-end-line="260" selection-end-column="32" />
+              <folding>
+                <element signature="e#1556#1595#0" expanded="true" />
+                <marker date="1518015725057" expanded="true" signature="2128:2134" ph="©" />
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
               </folding>
             </state>
           </provider>
@@ -122,6 +155,7 @@
       <find>addTo</find>
       <find>resetTimer</find>
       <find>city</find>
+      <find>difficulty</find>
       <find>consol</find>
       <find>split</find>
       <find>nextIMage</find>
@@ -135,6 +169,7 @@
       <find>10</find>
       <find>mapIndex</find>
       <find>clicked</find>
+<<<<<<< HEAD
       <find>difficulty</find>
       <find>displa</find>
       <find>next</find>
@@ -144,6 +179,9 @@
       <find>header</find>
       <find>imgNumber</find>
       <find>this.city.photos</find>
+=======
+      <find>setGA</find>
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -161,11 +199,17 @@
         <option value="$PROJECT_DIR$/src/config/index.js" />
         <option value="$PROJECT_DIR$/src/store/modules/game.js" />
         <option value="$PROJECT_DIR$/src/router/index.js" />
+        <option value="$PROJECT_DIR$/src/App.vue" />
         <option value="$PROJECT_DIR$/src/components/Navbar.vue" />
+        <option value="$PROJECT_DIR$/src/components/Game.vue" />
         <option value="$PROJECT_DIR$/src/components/Home.vue" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/src/App.vue" />
         <option value="$PROJECT_DIR$/src/components/New.vue" />
         <option value="$PROJECT_DIR$/src/components/Game.vue" />
+=======
+        <option value="$PROJECT_DIR$/src/components/New.vue" />
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
       </list>
     </option>
   </component>
@@ -499,12 +543,20 @@
       <updated>1517825500988</updated>
       <workItem from="1517825502573" duration="234000" />
       <workItem from="1517842759572" duration="8368000" />
+<<<<<<< HEAD
       <workItem from="1517905578027" duration="60304000" />
+=======
+      <workItem from="1517905578027" duration="49209000" />
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="79426000" />
+=======
+    <option name="totallyTimeSpent" value="68331000" />
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
   </component>
   <component name="ToolWindowManager">
     <frame x="1984" y="-11" width="1857" height="1092" extended-state="6" />
@@ -604,8 +656,13 @@
         <state relative-caret-position="1920">
           <caret line="96" column="49" lean-forward="false" selection-start-line="96" selection-start-column="49" selection-end-line="96" selection-end-column="49" />
           <folding>
+<<<<<<< HEAD
             <element signature="e#3730#3769#0" expanded="true" />
             <marker date="1518082765490" expanded="true" signature="4302:4308" ph="©" />
+=======
+            <element signature="e#1556#1595#0" expanded="true" />
+            <marker date="1518015725057" expanded="true" signature="2128:2134" ph="©" />
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
           </folding>
         </state>
       </provider>
@@ -673,8 +730,13 @@
         <state relative-caret-position="260">
           <caret line="13" column="3" lean-forward="false" selection-start-line="13" selection-start-column="3" selection-end-line="13" selection-end-column="3" />
           <folding>
+<<<<<<< HEAD
             <element signature="e#3730#3769#0" expanded="true" />
             <marker date="1518082765490" expanded="true" signature="4302:4308" ph="©" />
+=======
+            <element signature="e#1556#1595#0" expanded="true" />
+            <marker date="1518015725057" expanded="true" signature="2128:2134" ph="©" />
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
           </folding>
         </state>
       </provider>
@@ -827,46 +889,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Navbar.vue">
+    <entry file="file://$PROJECT_DIR$/src/App.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="38" column="26" lean-forward="false" selection-start-line="38" selection-start-column="26" selection-end-line="38" selection-end-column="26" />
+        <state relative-caret-position="540">
+          <caret line="27" column="31" lean-forward="false" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/App.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="406">
           <caret line="27" column="25" lean-forward="true" selection-start-line="27" selection-start-column="25" selection-end-line="27" selection-end-column="30" />
+=======
+    <entry file="file://$PROJECT_DIR$/src/components/Navbar.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="38" column="26" lean-forward="false" selection-start-line="38" selection-start-column="26" selection-end-line="38" selection-end-column="26" />
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
+          <folding />
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/src/components/New.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="42" column="20" lean-forward="false" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
+          <folding />
+=======
+    <entry file="file://$PROJECT_DIR$/src/components/Game.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3281">
+          <caret line="260" column="32" lean-forward="false" selection-start-line="260" selection-start-column="32" selection-end-line="260" selection-end-column="32" />
+          <folding>
+            <element signature="e#1556#1595#0" expanded="true" />
+            <marker date="1518015725057" expanded="true" signature="2128:2134" ph="©" />
+          </folding>
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Home.vue">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="149">
+          <caret line="9" column="18" lean-forward="true" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+=======
+        <state relative-caret-position="160">
+          <caret line="8" column="25" lean-forward="true" selection-start-line="3" selection-start-column="16" selection-end-line="8" selection-end-column="25" />
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/New.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="42" column="20" lean-forward="false" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Home.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="9" column="18" lean-forward="true" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Game.vue">
-      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="245">
           <caret line="149" column="99" lean-forward="false" selection-start-line="149" selection-start-column="99" selection-end-line="149" selection-end-column="99" />
           <folding>
             <element signature="e#3730#3769#0" expanded="true" />
             <marker date="1518082765490" expanded="true" signature="4302:4308" ph="©" />
           </folding>
+=======
+        <state relative-caret-position="75">
+          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding />
+>>>>>>> d097e860f51e513e632cbff4198829338f6ca2ed
         </state>
       </provider>
     </entry>
