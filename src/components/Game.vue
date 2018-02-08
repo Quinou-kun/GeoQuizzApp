@@ -1,6 +1,6 @@
 <template>
 <!-- eslint-disable -->
-    <div>
+    <div id="game-container">
         <div id="game"  v-if="this.index !== this.maxIndex">
           <div>
             <div id="img">
@@ -340,11 +340,21 @@ export default {
 /* eslint-disable */
 @import "../../node_modules/leaflet/dist/leaflet.css";
 
+
+    #map{
+        cursor: url('../assets/marker/clicked_marker-icon.png')13 40, pointer;
+    }
+
+
+    #game-container{
+        overflow-y: auto;
+    }
     #geo-map{
         width: 51vw;
         height: calc(100vh - 140px);
         float : right;
     }
+
     #geo-map, #img, #countdown{
         vertical-align : middle;
         display : inline-block;

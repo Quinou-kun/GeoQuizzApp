@@ -1,5 +1,5 @@
 <template>
-    <div id="home-container">
+    <div id="scoreboard-container">
         <b-container>
             <b-card no-body id="scoreboard">
                 <b-tabs pills card>
@@ -61,9 +61,10 @@ export default {
 
 <style scoped>
     
-    #home-container{
+    #scoreboard-container{
         background-color : rgba(0,0,0,0.8);
         height : calc(100vh - 140px);
+        overflow-y: auto
     }
 
     #scoreboard{
