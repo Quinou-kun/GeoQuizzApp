@@ -2,7 +2,7 @@
   <div id="continue-container">
     <div id="continue">
         <b-card no-body bg-variant="dark"
-                header="<h3>Hey ! We had saved a current game, what do you want to do ?</h3>"
+                header="<h3>You still have a game on pause, do you want to reload it ?</h3>"
                 text-variant="white"
                 class="text-center">
         </b-card>
