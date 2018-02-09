@@ -327,6 +327,8 @@ export default {
       this.clicked = false
       this.clickedMarker = null
       this.$refs.map.mapObject.dragging.enable()
+      this.$refs.map.mapObject.setZoom(this.zoom)
+      this.$refs.map.mapObject.panTo(this.center)
 
       this.imgNumber++
       this.nextImage(this.imgNumber)
@@ -399,6 +401,7 @@ export default {
         height: calc(100vh - 140px);
         width: 51vw;
         float : right;
+    
     }
 
     #geo-map, #img, #countdown{
