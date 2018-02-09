@@ -20,15 +20,19 @@
                             <b-img :src="img" alt="Photo" id="photo"></b-img>
                             <div v-if="this.stop  && !this.paused">
                                 <h1>+ {{pts}} pts</h1>
-                                <b-button @click="resetMap()" variant="danger" size="lg">Next !</b-button>
+                                <b-button @click="resetMap()" variant="danger" size="lg" class="mr-3">Next !</b-button>
+                                <b-button size="lg" @click="pause()">PAUSE</b-button>
+
                             </div>
                             <div v-else>
                                 <b-button v-if="!this.clicked" disabled variant="danger" size="lg" class="mr-3">Until validate, put a marker !</b-button>
                                 <b-button v-else @click="stopTimer(false)" variant="danger" size="lg" class="mr-3">Here !</b-button>
-                                <b-button v-if="!this.stop" @click="stopTimer(true)" size="lg">I give up !</b-button>
+                                <b-button v-if="!this.stop" @click="stopTimer(true)" size="lg" class="mr-3">I give up !</b-button>
+                                <b-button size="lg" @click="pause()">PAUSE</b-button>
                             </div>
+
                         </b-card-body>
-                        <b-button size="lg" @click="pause()">PAUSE</b-button>
+
                     </b-card>
                 </div>
 
@@ -90,7 +94,7 @@
 </template>
 
 <script>
-    /* eslint-disable */
+/* eslint-disable */
     import Vue2Leaflet from 'vue2-leaflet';
     import Vue from 'vue';
     import axios from 'axios'
@@ -456,8 +460,8 @@
     #photo{
         height: auto;
         padding-bottom : 2.5%;
-        width : 70%;
-        max-height : 70%;
+        width : auto;
+        max-height : 45vh;
     }
     .game-content{
         width : 48vw;

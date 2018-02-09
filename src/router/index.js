@@ -37,7 +37,7 @@ export const router = new Router({
       name: 'Continue',
       component: Continue
     },
-    { path: '/404', component: NotFound },  
+    { path: '/404', component: NotFound },
     { path: '*', redirect: '/404' }
   ]
 })
