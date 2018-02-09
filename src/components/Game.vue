@@ -16,9 +16,9 @@
                     <b-card-body>
                         <b-progress :value="timer" :max="30" class="mb-3" variant="danger"></b-progress>
                         <h1>{{timer}}</h1>
-                        <h3 v-if="this.stop">This is the {{city.photos[imgNumber].desc}}</h3>
+                        <h3 v-if="this.stop && !this.paused">This is the {{city.photos[imgNumber].desc}}</h3>
                         <b-img :src="img" alt="Photo" id="photo"></b-img>
-                        <div v-if="this.stop">
+                        <div v-if="this.stop  && !this.paused">
                             <h1>+ {{pts}} pts</h1>
                             <b-button @click="resetMap()" variant="danger" size="lg">Next !</b-button>
                         </div>
@@ -28,6 +28,8 @@
                             <b-button v-if="!this.stop" @click="stopTimer(true)" size="lg">I give up !</b-button>
                         </div>
                     </b-card-body>
+                    <b-button size="lg" @click="pause()" v-if="!this.stop && !this.paused || this.paused">PAUSE</b-button>
+                    <b-button size="lg" v-if="this.stop && !this.paused">pause local storage</b-button>
                 </b-card>
             </div>
 
@@ -144,7 +146,8 @@ export default {
       }),
       fieldsScore: [ 'QUESTION', 'DISTANCE', 'POINTS', 'TIMER MULTIPLIER', 'TOTAL'],
       itemsScore: [],
-      giveup: false
+      giveup: false,
+      paused : false
     }
   },
   mounted () {
@@ -172,6 +175,15 @@ export default {
 
   },
   methods :{
+  pause () {
+    if(!this.paused){
+      this.stopTimer(false)
+    } else {
+      this.stop = false
+      this.count()
+    }
+    this.paused = !this.paused
+  },
     nextImage (imgNumber){
       if(imgNumber < this.city.photos.length){
         let markerPosition = this.city.photos[imgNumber].position.split(';')
@@ -203,7 +215,10 @@ export default {
             this.stop = !this.stop
           }
           clearInterval(interval)
-          this.displaySolution()
+          if(!this.paused){
+            this.displaySolution()
+
+          }
         }
       }, 1000)
     },
