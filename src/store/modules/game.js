@@ -1,5 +1,5 @@
 import api from '@/api'
-// import ls from 'local-storage'
+import ls from 'local-storage'
 
 export default {
   namespaced: true,
@@ -7,7 +7,8 @@ export default {
     difficulty: null,
     series: null,
     city: {},
-    photos: []
+    photos: [],
+    game: null
   },
   getters: {
     getDifficulty (state) {
@@ -21,6 +22,9 @@ export default {
     },
     getSeries (state) {
       return state.series
+    },
+    getGame (state) {
+      return state.game
     }
   },
   mutations: {
@@ -31,6 +35,12 @@ export default {
     },
     initSeries (state, series) {
       state.series = series
+    },
+    continueGame (state, game) {
+      state.game = game
+    },
+    resetGame (state) {
+      state.game = null
     }
   },
   actions: {
@@ -55,6 +65,20 @@ export default {
       api.get('/series').then(response => {
         commit('initSeries', response.data)
       })
+    },
+    saveGame ({commit}, game) {
+      ls.set('game', game)
+    },
+    removeGame () {
+      ls.remove('game')
+    },
+    continueGame ({commit}) {
+      let game = ls.get('game')
+      ls.remove('game')
+      commit('continueGame', game)
+    },
+    resetGame ({commit}) {
+      commit('resetGame')
     }
   }
 }
