@@ -4,7 +4,7 @@
             <b-card no-body id="scoreboard">
                 <b-tabs pills card>
                     <b-tab :key="game" v-for="game in games" :title="game.ville">
-                        <b-tabs pills card  class="test">
+                        <b-tabs pills card>
 
                             <b-tab title="Easy">
                                 <b-table head-variant="light" dark bordered responsive :items="game.scores.easy" :fields="fields"></b-table>
@@ -35,7 +35,9 @@ export default {
     return {
         msg: 'This is the register page',
         games: [],
-        fields: [ 'player', 'score' ],
+        fields: [ 'rank', 'player', 'score' ],
+        index: 1
+
     }
   },
   created () {
@@ -49,11 +51,14 @@ export default {
                 // Scores in easy mode
                 game.scores.easy = []
                 axios.get("http://localhost:8080/geoquizzapi/api/games", {params: {idSerie: serie.id, mode: "0"}}).then(response => {
-                    response.data.games.forEach(g => {
+
+                  this.index = 1
+                  response.data.games.forEach(g => {
                         let score = {}
                         score.player = g.player
                         score.score = g.score
-                        
+                        score.rank = this.index
+                        this.index++
                         game.scores.easy.push(score)
                     })
                 }).catch(error => {
@@ -64,46 +69,46 @@ export default {
                 // Scores in normal mode
                 game.scores.normal = []
                 axios.get("http://localhost:8080/geoquizzapi/api/games", {params: {idSerie: serie.id, mode: "1"}}).then(response => {
-                    response.data.games.forEach(g => {
+                  this.index = 1
+                  response.data.games.forEach(g => {
                         let score = {}
                         score.player = g.player
                         score.score = g.score
-                        
+                      score.rank = this.index
+                      this.index++
                         game.scores.normal.push(score)
                     })
                 }).catch(error => {
                     console.log(error)
                 })
-
                 // Scores in hard mode
                 game.scores.hard = []
                 axios.get("http://localhost:8080/geoquizzapi/api/games", {params: {idSerie: serie.id, mode: "2"}}).then(response => {
-                    response.data.games.forEach(g => {
+
+                  this.index = 1
+                  response.data.games.forEach(g => {
                         let score = {}
                         score.player = g.player
                         score.score = g.score
-                        
+                        score.rank = this.index
+                        this.index++
                         game.scores.hard.push(score)
                     })
                 }).catch(error => {
                     console.log(error)
                 })
-
                 this.games.push(game)
                 
             })
         }).catch(error => {
             console.log(error)
         })
-    },
-    methods: {
-  
     }
 }
 </script>
 
 <style scoped>
-    
+
     #scoreboard-container{
         background-color : rgba(0,0,0,0.8);
         height : calc(100vh - 140px);
