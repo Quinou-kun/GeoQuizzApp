@@ -120,6 +120,20 @@ export default {
         border-radius : 10px;
         font-size : 1.2em;
     }
-
 </style>
+
+<style>
+    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+        background-color: #DC3545;
+    }
+
+    a {
+        color: #DC3545;
+    }
+
+    a:hover {
+        color: #c82333;
+    }
+</style>
+
 
