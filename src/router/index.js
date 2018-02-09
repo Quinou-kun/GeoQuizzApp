@@ -35,7 +35,9 @@ export const router = new Router({
       path: '/continue',
       name: 'Continue',
       component: Continue
-    }
+    },
+    { path: '/404', component: NotFound },  
+    { path: '*', redirect: '/404' }
   ]
 })
 router.beforeEach((to, from, next) => {
