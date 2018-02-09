@@ -28,6 +28,8 @@ export default new Router({
       path: '/scoreboard',
       name: 'scoreboard',
       component: Scoreboard
-    }
+    },
+    { path: '/404', component: NotFound },  
+    { path: '*', redirect: '/404' }
   ]
 })
