@@ -28,7 +28,7 @@ npm run build --report
 
 ## Built With
 
-* [VueJs](https://github.com/vuejs/vue) (example)
+* [VueJs](https://github.com/vuejs/vue)
 
 # Creators
 
