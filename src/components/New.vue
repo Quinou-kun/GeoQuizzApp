@@ -26,15 +26,15 @@
                 </b-form-group>
                 <div v-if="difficulty === '0'">
                     <b-table striped hover :items="itemsEasy" :fields="fields"></b-table>
-                    <h5>Number of pictures : 5</h5>
+                    <h5>Number of pictures : 5 (at most)</h5>
                 </div>
                 <div v-if="difficulty === '1'">
                     <b-table striped hover :items="itemsNormal" :fields="fields"></b-table>
-                    <h5>Number of pictures : 10</h5>
+                    <h5>Number of pictures : 10 (at most)</h5>
                 </div>
                 <div v-if="difficulty === '2'">
                     <b-table striped hover :items="itemsHardcore" :fields="fields"></b-table>
-                    <h5>Number of pictures : 20</h5>
+                    <h5>Number of pictures : 20 (at most)</h5>
                 </div>
             </b-card>
 
