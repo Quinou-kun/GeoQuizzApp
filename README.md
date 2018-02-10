@@ -2,8 +2,6 @@
 
 # GAME APPLICATION
 
-## Getting Started
-
 This project is a Game that's been developed during the "Atelier 2" week of the CISIIE professionnal licence in 2017-2018, along with a [API app](https://github.com/Quinou-kun/GeoQuizzApi) and an [Admin client](https://github.com/lucandreiut/GeoQuizzAdmin).
 
 ### Prerequisites
@@ -26,8 +24,4 @@ npm run dev
 
 # Creators
 
-* [Quentin RENOUARD](https://github.com/Quinou-kun)
-* [Luc ANDRE](https://github.com/lucandreiut)
-* [Quentin DELAMARRE](https://github.com/windos757)
-* [Allan DEMARBRE](https://github.com/demarbre1u)
-* [Nacera ELIAS](https://github.com/EliasNacera)
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
