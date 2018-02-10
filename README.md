@@ -1,6 +1,6 @@
-# GeoQuizzApp
+<p align="center"><img src="https://raw.githubusercontent.com/lucandreiut/GeoQuizzAdmin/develop/src/assets/logo/logo.png"/></p>
 
-Add Description
+# GAME APPLICATION
 
 ## Getting Started
 
