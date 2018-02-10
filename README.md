@@ -4,7 +4,7 @@
 
 ## Getting Started
 
-This project is an Game that's been developed during the "Atelier 2" week of the CISIIE professionnal licence in 2017-2018, along with a [API app](https://github.com/Quinou-kun/GeoQuizzApi) and an [Admin client](https://github.com/lucandreiut/GeoQuizzAdmin).
+This project is a Game that's been developed during the "Atelier 2" week of the CISIIE professionnal licence in 2017-2018, along with a [API app](https://github.com/Quinou-kun/GeoQuizzApi) and an [Admin client](https://github.com/lucandreiut/GeoQuizzAdmin).
 
 ### Prerequisites
 
