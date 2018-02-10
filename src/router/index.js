@@ -5,6 +5,7 @@ import NotFound from '@/components/NotFound'
 import New from '@/components/New'
 import Game from '@/components/Game'
 import Scoreboard from '@/components/Scoreboard'
+import RefreshGame from '@/components/RefreshGame'
 import Continue from '@/components/Continue'
 import ls from 'local-storage'
 
@@ -25,7 +26,16 @@ export const router = new Router({
     {
       path: '/game',
       name: 'Game',
-      component: Game
+      component: Game,
+      beforeEnter: (to, from, next) => {
+        console.log(from.name)
+        if (from.name === null) {
+          console.log('coucou')
+          next({name: 'RefreshGame', query: {redirect: to.fullPath}})
+        } else {
+          next()
+        }
+      }
     },
     {
       path: '/scoreboard',
@@ -37,8 +47,14 @@ export const router = new Router({
       name: 'Continue',
       component: Continue
     },
+    {
+      path: '/refreshGame',
+      name: 'RefreshGame',
+      component: RefreshGame
+    },
     { path: '/404', component: NotFound },
-    { path: '*', redirect: '/404' }
+    { path: '*', redirect: '/404' },
+
   ]
 })
 router.beforeEach((to, from, next) => {
