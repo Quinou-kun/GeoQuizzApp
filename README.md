@@ -8,27 +8,28 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 ```
-* 
-* 
-```
-### Installing and Running
-
-In order to run the project, use he following commands
-
-```
-* 
-* 
+* [NodeJs](https://nodejs.org/en/) (npm)
 ```
 
-Then, a server is running on your local machine shown in your terminal.
+## Build Setup
 
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+```
 
 ## Built With
 
 * [VueJs](https://github.com/vuejs/vue) (example)
-* 
-* 
-* 
 
 # Creators
 
